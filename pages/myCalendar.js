@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
 import ShowEvents from "@/components/myCalender/ShowEvents";
 import Calendar from "@/components/myCalender/Calendar";
@@ -8,16 +8,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 function MyCalendar(props) {
 
-  const initial_weather_data = useSelector((state) => state.initial_weather_data);
-
   const dispatch = useDispatch()
 
+  const shouldLog = useRef(true)
+
   useEffect(() => {
-    dispatch( loadInitalDataAction() )
+
+    if(shouldLog.current){
+
+      shouldLog.current = false
+      dispatch( loadInitalDataAction() )
+
+    }
+
   },[])
-
-
-
 
   return (
     <div className="container">

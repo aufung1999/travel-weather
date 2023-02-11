@@ -5,8 +5,12 @@ import { useAuth } from "../context/AuthContext";
 import { getFirestore, doc, setDoc, addDoc } from "firebase/firestore";
 
 import { db } from "@/config/firebase";
+import { useRouter } from "next/router";
 
 const Signup = () => {
+
+  const router = useRouter()
+
   const { user, signup } = useAuth();
   console.log(user);
   const [data, setData] = useState({
@@ -24,8 +28,7 @@ const Signup = () => {
 
       setDoc(dbRef, {'uid': newUser.user.uid}  )
 
-      
-
+      router.push('/myCalendar')
 
     } catch (err) {
       console.log(err);

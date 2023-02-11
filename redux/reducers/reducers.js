@@ -9,9 +9,27 @@ const loadInitalDataReducer = (state = null, action) => {
     }
 }
 
+// """""""""""""""""useless"""""""""""""""""
+const storeWeatherIconsReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'store-WeatherIcons-Data':
+            return [...state, action.payload]
+        case 'CLEANUP_WeatherIcons':
+            return []
+        default:
+            return state
+    }
+}
+
+
+
 const reducers = combineReducers({
 
-    initial_weather_data: loadInitalDataReducer
+    initial_Weather_data: loadInitalDataReducer,
+
+    // """""""""""""""""useless"""""""""""""""""
+    WeatherIcons_data:  storeWeatherIconsReducer,
+
 
 })
 

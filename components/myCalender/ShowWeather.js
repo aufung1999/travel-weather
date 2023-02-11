@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useEffect, useCallback } from "react";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import findRepeated from "../reuseFunctions/findRepeated"
+import DisplayWeatherIcon from "./DisplayWeatherIcon";
+
+import { storeWeatherIconsAction } from "@/redux/actions/actions";
 
 function ShowWeather({ day }) {
 
+  const dispatch = useDispatch()
+
+  // const WeatherIcons_data = useSelector((state) => state.WeatherIcons_data);
+
   const [matchDay, setMatchDay] = useState([]);
 
-  const [State, setState] = useState(
-    null
-  )
+  const shouldLog = useRef(true)
 
-  const initial_weather_data = useSelector(
-    (state) => state.initial_weather_data
+  const initial_Weather_data = useSelector(
+    (state) => state.initial_Weather_data
   );
 
   //####################################################
@@ -34,54 +39,32 @@ function ShowWeather({ day }) {
     return average;
   }
 
-  //####################################################
-
-  function weather_icon() {
-    let temp_array = [];
-
-    matchDay.map((time_interval) =>
-      {temp_array.push(time_interval["weather"][0]["icon"])} // sometimes be careful with the array/object format!!!!
-    );
-
-    // let freq_dist = null;
-
-    // if (temp_array.length != 0) {
-    //   freq_dist = findRepeated(temp_array)
-    //   console.log('freq_dist: ' + JSON.stringify(freq_dist))
-    // }
-
-    // const result = freq_dist  ? Object.keys(freq_dist) : null ;
-
-    // console.log('temp_array: ' + temp_array.length)
-
-    return temp_array;
-  }
-
-  //####################################################
+  //Hello: ####################################################
 
   useEffect(() => {
-    let result;
+    let result = null;
+    let temp_array = [];
 
-    if (initial_weather_data){
-      result = initial_weather_data["list"].filter((time_interval) => day.format("YYYY-MM-DD") == time_interval["dt_txt"].substr(0, time_interval["dt_txt"].indexOf(" "))  )
+    if (shouldLog.current && initial_Weather_data){
+
+      shouldLog.current = false
+
+      result = initial_Weather_data["list"].filter((time_interval) => day.format("YYYY-MM-DD") == time_interval["dt_txt"].substr(0, time_interval["dt_txt"].indexOf(" "))  )
+
       console.log('result: ' + JSON.stringify(result.length))
 
       setMatchDay([...result])
     }
 
-    cal_Average_temp()
-    weather_icon()
-
-   }, [day])
+    // return () => { dispatch(  {type:"CLEANUP_WeatherIcons"} ) }
+   }, [initial_Weather_data])
 
   return <div>
-    <div className="row">{cal_Average_temp()?.toFixed(1)}</div>
-    {/* <div className="row"> */}
-      {weather_icon()?.map(weather =>
-      <div><img id="wicon" src={`http://openweathermap.org/img/w/${weather}.png`} alt="Weather icon"  /></div>
-      )
-    }
-    {/* </div> */}
+      <div className="row">{cal_Average_temp()?.toFixed(1)}</div>
+      <div className="row">
+        {(matchDay.length != 0) && <DisplayWeatherIcon day={day} matchDay={matchDay}/>}
+
+      </div>
     </div>
 }
 

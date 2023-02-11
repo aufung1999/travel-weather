@@ -5,7 +5,7 @@ import ShowWeather from "./ShowWeather";
 
 import { useDispatch } from "react-redux";
 
-function Calendar() {
+const Calendar = () => {
 
   const dispatch = useDispatch()
 
@@ -19,7 +19,6 @@ function Calendar() {
         <button onClick={() => { isClicked(prev => prev - 1)}}  >Last month</button>
         <button onClick={() => { isClicked(prev => prev + 1)}}  >Next month</button>
       </div>
-
 
 
       <div>{currentDay.format("MM-YYYY")}</div>
