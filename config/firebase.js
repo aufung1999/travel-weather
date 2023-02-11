@@ -2,6 +2,8 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
+import { getFirestore, doc, setDoc } from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyDCHjAwqudLGMwauWaSruvK9wjrFEO1954",
   authDomain: "travel-forecast-weather.firebaseapp.com",
@@ -12,6 +14,10 @@ const firebaseConfig = {
   measurementId: "G-MCL0JYH5GK"
 };
 
+
+
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-export const auth = getAuth()
+export const db = getFirestore(app)
+export const auth = getAuth(app)

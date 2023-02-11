@@ -1,22 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ShowEvents from "@/components/myCalender/ShowEvents";
 import Calendar from "@/components/myCalender/Calendar";
+import { loadInitalDataAction } from "@/redux/actions/actions";
 
-const MyCalendar = (props) => (
-  <div className="container">
-    <div className="col d-flex">
+import { useDispatch, useSelector } from "react-redux";
 
-      <div className="row">
-        <ShowEvents />
+function MyCalendar(props) {
+
+  const initial_weather_data = useSelector((state) => state.initial_weather_data);
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch( loadInitalDataAction() )
+  },[])
+
+
+
+
+  return (
+    <div className="container">
+      <div className="col d-flex">
+        <div className="row">
+          <ShowEvents />
+        </div>
+
+        <div className="row">
+          <Calendar />
+        </div>
       </div>
-
-      <div className="row">
-        <Calendar/>
-      </div>
-
     </div>
-  </div>
-);
+  );
+}
 
 export default MyCalendar;

@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 
+import { getFirestore, doc, setDoc, addDoc } from "firebase/firestore";
+
+import { db } from "@/config/firebase";
+
 const Signup = () => {
   const { user, signup } = useAuth();
   console.log(user);
@@ -14,12 +18,20 @@ const Signup = () => {
     e.preventDefault();
 
     try {
-      await signup(data.email, data.password);
+      let newUser = await signup(data.email, data.password);
+
+      const dbRef = doc(db, "users" , newUser.user.uid);
+
+      setDoc(dbRef, {'uid': newUser.user.uid}  )
+
+      
+
+
     } catch (err) {
       console.log(err);
     }
 
-    console.log(data);
+    // console.log(data);
   };
 
   return (

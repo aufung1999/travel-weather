@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import moment from "moment/moment";
 import CurrentTime from "./CurrentTime";
+import ShowWeather from "./ShowWeather";
+
+import { useDispatch } from "react-redux";
 
 function Calendar() {
-    const [clicked, isClicked] = useState(0)
+
+  const dispatch = useDispatch()
+
+  const [clicked, isClicked] = useState(0)
 
   const [calendar, currentDay] = CurrentTime(clicked);
 
@@ -13,6 +19,8 @@ function Calendar() {
         <button onClick={() => { isClicked(prev => prev - 1)}}  >Last month</button>
         <button onClick={() => { isClicked(prev => prev + 1)}}  >Next month</button>
       </div>
+
+
 
       <div>{currentDay.format("MM-YYYY")}</div>
 
@@ -31,9 +39,11 @@ function Calendar() {
         {calendar?.map((week) => (
           <div className="row">
             {week["days"].map((day) => (
-              <p className="col" key={day}>
-                {day.format("DD-MM-YYYY")}
-              </p>
+              <div className="col" key={day}>
+                {day.format("DD-MM")}
+                {console.log("RENDER")}
+                <ShowWeather day={day}/>
+              </div>
             ))}
           </div>
         ))}
