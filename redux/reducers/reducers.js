@@ -21,7 +21,31 @@ const storeWeatherIconsReducer = (state = [], action) => {
     }
 }
 
+//############################################################################################################################################################
 
+const selectDaysReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'select-Days-Data':
+            return [...state, action.payload]
+        case 'CLEANUP_selectDays':
+            return []
+        default:
+            return state
+    }
+}
+
+//############################################################################################################################################################
+
+const storeSelectDaysReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'store-select-Days-Data':
+            return [...state, action.payload]
+        case 'CLEANUP_storeSelectDays':
+            return []
+        default:
+            return state
+    }
+}
 
 const reducers = combineReducers({
 
@@ -29,6 +53,10 @@ const reducers = combineReducers({
 
     // """""""""""""""""useless"""""""""""""""""
     WeatherIcons_data:  storeWeatherIconsReducer,
+
+    selected_days: selectDaysReducer,
+
+    store_selected_days: storeSelectDaysReducer,
 
 
 })

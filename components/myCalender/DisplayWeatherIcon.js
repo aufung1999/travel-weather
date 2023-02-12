@@ -26,7 +26,7 @@ function DisplayWeatherIcon(  {day, matchDay}  ) {
 
       setIndex(prev => prev + 1)
 
-    }, 1000);
+    }, 1000000);
 
     return () => clearInterval(interval);
   }, []);
@@ -44,11 +44,7 @@ function DisplayWeatherIcon(  {day, matchDay}  ) {
   }, [index])
 
   return (
-    <div>
-      {/* {index},
-      {matchDay.length} */}
-        <div><img id="wicon" src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`} alt="Weather icon"  /></div>
-      </div>
+    <><img src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`} alt="Weather icon" /></>
   )
 }
 

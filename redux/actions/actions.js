@@ -39,4 +39,28 @@ export const cleanupWeatherIconsAction = () => {
 
 //###################################################################################
 
+export const selectDaysAction = ( selectDay ) => {
 
+    return async (dispatch,getState)=>{
+
+        dispatch({
+                type : 'select-Days-Data',
+                payload : selectDay
+            });
+
+    }
+}
+
+//###################################################################################
+
+export const storeSelectDaysAction = ( validate ) => {
+
+    return async (dispatch,getState)=>{
+
+        dispatch({
+                type : 'store-select-Days-Data',
+                payload : validate
+            });
+
+    }
+}

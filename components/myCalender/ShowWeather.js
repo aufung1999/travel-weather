@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import findRepeated from "../reuseFunctions/findRepeated"
 import DisplayWeatherIcon from "./DisplayWeatherIcon";
 
-import { storeWeatherIconsAction } from "@/redux/actions/actions";
+import { selectDaysAction, storeWeatherIconsAction } from "@/redux/actions/actions";
 
-function ShowWeather({ day }) {
+function ShowWeather({ day, selectDayBtn }) {
 
   const dispatch = useDispatch()
 
@@ -43,7 +43,6 @@ function ShowWeather({ day }) {
 
   useEffect(() => {
     let result = null;
-    let temp_array = [];
 
     if (shouldLog.current && initial_Weather_data){
 
@@ -59,13 +58,25 @@ function ShowWeather({ day }) {
     // return () => { dispatch(  {type:"CLEANUP_WeatherIcons"} ) }
    }, [initial_Weather_data])
 
-  return <div>
-      <div className="row">{cal_Average_temp()?.toFixed(1)}</div>
-      <div className="row">
-        {(matchDay.length != 0) && <DisplayWeatherIcon day={day} matchDay={matchDay}/>}
+//############################################################################################################################################################
 
-      </div>
-    </div>
+   const selectedDay = () => {
+    dispatch( selectDaysAction(day.unix()) )
+   }
+
+  return <>
+      {
+        (matchDay.length != 0)?
+        <div className="">
+          <div className="row border">{cal_Average_temp()?.toFixed(1)}</div>
+          <div className="row border"> <DisplayWeatherIcon day={day} matchDay={matchDay}/> </div>
+        </div>
+      :
+        null
+      }
+
+      {selectDayBtn && <button className="btn btn-primary" onClick={selectedDay} >select</button>}
+    </>
 }
 
 export default ShowWeather;
