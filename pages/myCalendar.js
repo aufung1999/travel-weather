@@ -8,8 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useAuth } from "@/context/AuthContext";
 
-import { db } from "@/config/firebase";
-import useFirebaseGet from "@/components/firebaseActions/useFirebaseGet";
 
 function MyCalendar(props) {
   const { user, logout } = useAuth();
@@ -31,13 +29,12 @@ function MyCalendar(props) {
     }
   }, []);
 
-
   return (
     <div className="container">
       <div className="col d-flex">
-        {addBtn ? null : ( // <GetPosition/>
-          <div className="row"><ShowEvents /> </div>
-        )}
+        {addBtn ?
+          null  : <div className="row me-5"><ShowEvents /> </div>
+        }
 
         <div className="row">
           <Calendar />

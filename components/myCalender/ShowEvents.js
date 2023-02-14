@@ -2,39 +2,51 @@ import React, { useState, useEffect } from "react";
 
 import { useAuth } from "@/context/AuthContext";
 
-import {
-  getFirestore,
-  doc,
-  setDoc,
-  addDoc,
-  updateDoc,
-  onSnapshot,
-} from "firebase/firestore";
-
-import { db } from "@/config/firebase";
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
-import { useDispatch, useSelector } from "react-redux";
+import moment from "moment";
+import useFirebaseDelete from "../firebaseActions/useFirebaseDelete";
+import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
 
 function ShowEvents() {
-  const store_selected_days = useSelector((state) => state.store_selected_days);
-
   const { user, logout } = useAuth();
-
-  const [input, setInput] = useState("");
-  const dispatch = useDispatch()
 
   const { array } = useFirebaseGet(user.uid);
 
-  useEffect(() => {
-    dispatch( {type:"load-firebase-Data", payload: array}  )
-  }, [db])
+  const Delete_from_Firebase = (e, selection) => {
+    e.preventDefault();
+
+    const filtered_array = array.filter(
+      // delete the selected one from firebase, by using the "filter" function, which means by excluding the selected one
+      (each) =>
+        each["validate_date"] != selection["validate_date"] &&
+        each["inputValue_address"] != selection["inputValue_address"]
+    );
+
+    FireBase_STORE_selected_place_date(filtered_array, user.uid, "delete");
+  };
 
   return (
     <div>
       <div>ShowEventdsffffs</div>
 
-      {console.log("array: " + JSON.stringify(array))}
-
+      {array &&
+        array.map((selection, index) => (
+          <div className="d-flex">
+            <div>
+              {selection["inputValue_address"]} {"  "}
+              {moment.unix(selection["validate_date"][0]).format("MM/DD/YYYY")}-
+              {moment
+                .unix(selection["validate_date"].at(-1))
+                .format("MM/DD/YYYY")}
+            </div>
+            <button
+              className="btn my-2 btn-outline-danger btn-sm"
+              onClick={(e) => Delete_from_Firebase(e, selection)}
+            >
+              delete
+            </button>
+          </div>
+        ))}
     </div>
   );
 }

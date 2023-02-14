@@ -26,7 +26,7 @@ const Calendar = () => {
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
 
-  // const {array} = useFirebaseGet(uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
+  const {array} = useFirebaseGet(uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
 
   useEffect(() => {
 
@@ -37,7 +37,7 @@ const Calendar = () => {
   useEffect(() => {
 
     if(store_selected_days.length != 0){
-      FireBase_STORE_selected_place_date(store_selected_days, uid)
+      FireBase_STORE_selected_place_date(store_selected_days, uid, "update")
     }
 
   }, [store_selected_days])
@@ -65,25 +65,25 @@ const Calendar = () => {
       <div className="container-fluid">
 
         <div className="row " >
-            <div className="col">Sun</div>
-            <div className="col">Mon</div>
-            <div className="col">Tue</div>
-            <div className="col">Wed</div>
-            <div className="col">Thu</div>
-            <div className="col">Fri</div>
-            <div className="col">Sat</div>
+            <div className="col" key="day-Sun">Sun</div>
+            <div className="col" key="day-Mon">Mon</div>
+            <div className="col" key="day-Tue">Tue</div>
+            <div className="col" key="day-Thu">Thu</div>
+            <div className="col" key="day-Fri">Fri</div>
+            <div className="col" key="day-Sat">Sat</div>
         </div>
 
+        {console.log('array: ' + JSON.stringify(array, null, 1))}
+
         {calendar?.map((week) => (
-          <div className="row fixed border" >
+          <div className="row fixed border" key={"week-"+JSON.stringify(week)}>
             {week["days"].map((day) => (
-              // <div className="col border bg-primary" key={day} style={{display: "table"}}>
-                // {console.log('validate: ' + validate?.includes(day.unix()))}
-                <div className="col border bg" key={day} style={{display: "table"}}>
+
+                <div className="col border bg" key={"day-" + day} style={{display: "table"}}>
                 {
-                  validate?.includes(day.unix())
+                  validate?.includes(day.unix()) && addBtn == true
                   ?
-                  <div className="col card bg-primary h-100" style={{display: "table-cell"}} key={day}>
+                  <div className="col card bg-primary h-100" style={{display: "table-cell"}} key={"select-" + day}>
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
@@ -91,7 +91,7 @@ const Calendar = () => {
                     </div>
                   </div>
                   :
-                  <div className="col card h-100" style={{display: "table-cell"}} key={day}>
+                  <div className="col card h-100" style={{display: "table-cell"}} key={"unselect-" + day}>
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
