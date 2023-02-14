@@ -6,12 +6,17 @@ import ShowWeather from "./ShowWeather";
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
 import { storeSelectDaysAction } from "@/redux/actions/actions";
+import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
+import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 
 const Calendar = () => {
 
   const dispatch = useDispatch()
 
   const selected_days = useSelector((state) => state.selected_days);
+  const store_selected_days = useSelector((state) => state.store_selected_days);
+  const addBtn = useSelector((state) => state.addBtn);
+  const uid = useSelector((state) => state.uid);  // Here can use useAuth() to get uid
 
   const [clicked, isClicked] = useState(0)
 
@@ -19,12 +24,27 @@ const Calendar = () => {
 
   const [selectDayBtn, isSelectDayBtn] = useState(false)
   const [validate, setValidate] = useState()
+  const [inputValue, setInputValue] = useState('')
+
+  // const {array} = useFirebaseGet(uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
 
   useEffect(() => {
 
     setValidate(validateSelectedDays(selected_days, calendar))
 
   }, [selected_days])
+
+  useEffect(() => {
+
+    if(store_selected_days.length != 0){
+      FireBase_STORE_selected_place_date(store_selected_days, uid)
+    }
+
+  }, [store_selected_days])
+
+  const handle_Store_Selected = () => {
+    dispatch( storeSelectDaysAction({validate_date: validate, inputValue_address: inputValue} ) )
+  }
 
   return (
     <div>
@@ -34,12 +54,11 @@ const Calendar = () => {
           <button onClick={() => { isClicked(prev => prev + 1)}}  >Next month</button>
         </div>
         <div>
-          <button className="ms-5" onClick={() => { isSelectDayBtn(!selectDayBtn) }} >Select Day</button>
-          {selectDayBtn && <button className="ms-5" onClick={() => { dispatch( storeSelectDaysAction(validate) ) }} >Store Selected Days</button>}
+          <button className="ms-5" onClick={() => { dispatch( {type: "addBtn-is-Clicked"} ) }} >Select Day</button>
+          {addBtn && <input type='text' value = {inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="place"></input>}
+          {addBtn && <button className="ms-5" onClick={ handle_Store_Selected } >Store Selected Days</button>}
         </div>
       </div>
-
-
 
       <div>{currentDay.format("MM-YYYY")}</div>
 
@@ -68,7 +87,7 @@ const Calendar = () => {
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
-                      <ShowWeather day={day} selectDayBtn={selectDayBtn}  />
+                      <ShowWeather day={day} addBtn={addBtn}  />
                     </div>
                   </div>
                   :
@@ -76,7 +95,7 @@ const Calendar = () => {
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
-                      <ShowWeather day={day} selectDayBtn={selectDayBtn}  />
+                      <ShowWeather day={day} addBtn={addBtn}  />
                     </div>
                   </div>
 

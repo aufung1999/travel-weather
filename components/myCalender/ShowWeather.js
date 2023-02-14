@@ -8,7 +8,7 @@ import DisplayWeatherIcon from "./DisplayWeatherIcon";
 
 import { selectDaysAction, storeWeatherIconsAction } from "@/redux/actions/actions";
 
-function ShowWeather({ day, selectDayBtn }) {
+function ShowWeather({ day, addBtn }) {
 
   const dispatch = useDispatch()
 
@@ -75,7 +75,7 @@ function ShowWeather({ day, selectDayBtn }) {
         null
       }
 
-      {selectDayBtn && <button className="btn btn-primary" onClick={selectedDay} >select</button>}
+      {addBtn && <button className="btn btn-sm btn-outline py-0" onClick={selectedDay} >select</button>}
     </>
 }
 

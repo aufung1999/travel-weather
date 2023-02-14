@@ -11,26 +11,25 @@ import { Provider } from "react-redux";
 
 const noAuthRequired = ["/", "/login", "/signup"];
 
-const store = configureStore(
-  {reducer: reducers}
-);
+const store = configureStore({ reducer: reducers });
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter();
 
   return (
-    <Provider store={store}>
-      <AuthContextProvider>
+    <AuthContextProvider>
+      <Provider store={store}>
         <NavbarComp />
         {noAuthRequired.includes(router.pathname) ? (
           <Component {...pageProps} />
         ) : (
           <ProtectedRoute>
             <Component {...pageProps} />
+            
           </ProtectedRoute>
         )}
-      </AuthContextProvider>
-    </Provider>
+      </Provider>
+    </AuthContextProvider>
   );
 }
 

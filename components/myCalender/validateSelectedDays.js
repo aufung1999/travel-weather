@@ -1,5 +1,3 @@
-import React from "react";
-
 function validateSelectedDays(selected_days, calendar) {
   console.log("selected_days: " + selected_days);
 
@@ -8,7 +6,7 @@ function validateSelectedDays(selected_days, calendar) {
     console.log("LAST 2nd index - selected_days: " + selected_days.at(-2));
 
     if (selected_days.at(-2) == selected_days.at(-1)) {
-      return [selected_days.at(-1)] // return array so that I can use .includes 
+      return [selected_days.at(-1)] // return array so that I can use .includes
     }
 
     if (    selected_days.at(-2) < selected_days.at(-1) ) {

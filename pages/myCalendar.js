@@ -6,29 +6,38 @@ import { loadInitalDataAction } from "@/redux/actions/actions";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { useAuth } from "@/context/AuthContext";
+
+import { db } from "@/config/firebase";
+import useFirebaseGet from "@/components/firebaseActions/useFirebaseGet";
+
 function MyCalendar(props) {
+  const { user, logout } = useAuth();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const shouldLog = useRef(true)
+  const addBtn = useSelector((state) => state.addBtn); // addBtn
+
+  const shouldLog = useRef(true);
 
   useEffect(() => {
+    // initial the WHOLE page  ***very important here!!!
 
-    if(shouldLog.current){
+    if (shouldLog.current) {
+      shouldLog.current = false;
 
-      shouldLog.current = false
-      dispatch( loadInitalDataAction() )
-
+      dispatch({ type: "uid", payload: user.uid });
+      dispatch(loadInitalDataAction());
     }
+  }, []);
 
-  },[])
 
   return (
     <div className="container">
       <div className="col d-flex">
-        <div className="row">
-          <ShowEvents />
-        </div>
+        {addBtn ? null : ( // <GetPosition/>
+          <div className="row"><ShowEvents /> </div>
+        )}
 
         <div className="row">
           <Calendar />
