@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export const loadInitalDataAction = () => {
   // Thunk Function
   return async (dispatch, getState) => {
@@ -20,16 +22,41 @@ export const loadGlobalDataAction = (each) => {
   // Thunk Function
   return async (dispatch, getState) => {
 
-    console.log('each: ' + JSON.stringify(each))
-  //   const response = await fetch(
-  //     "http://api.openweathermap.org/data/2.5/forecast?lat=42.985900&lon=-81.294700&appid=6e0f30fd9824b943d84e28b935ec6e4d&units=metric&cnt=40"
-  //   );
-  //   const data = await response.json();
+    // console.log('each: ' + JSON.stringify(each))
 
-  //   dispatch({
-  //     type: "load-Global-Weather-Data",
-  //     payload: data,
-  //   });
+    Promise.all(each.map(async (each_location) =>{
+
+        let lat = each_location["LL"]["lat"]
+        let lng = each_location["LL"]["lng"]
+
+        let start_date = moment(each_location["validate_date"][0]*1000).format("YYYY-MM-DD")
+        let end_date = moment(each_location["validate_date"].at(-1)*1000).format("YYYY-MM-DD")
+
+        // console.log('lat,lng,start_date,end_date: ' + lat,lng,start_date,end_date)
+
+        fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto&start_date=${start_date}&end_date=${end_date}`
+        )
+        .then(res => res.json())
+        .then( data =>
+          // console.log('data: ' + JSON.stringify(data), each_location)
+          dispatch({
+          type: "load-Global-Weather-Data",
+          payload: {target_data: data, destination: each_location},
+          })
+        )
+
+        // console.log('response: ' + response)
+
+        // return Promise(response)
+
+      })
+    )
+
+    // console.log('responses: ' + JSON.stringify(responses))
+
+
+
   };
 };
 

@@ -1,14 +1,33 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+
+import moment from 'moment';
+
+import { useDispatch, useSelector } from 'react-redux'
 
 import { loadGlobalDataAction } from '@/redux/actions/actions'
 
 function ShowWeather_Globe( {day, each} ) {
-    const dispatch = useDispatch()
-//   console.log('each: ' + JSON.stringify(each))
-  dispatch( loadGlobalDataAction(each) )
+
+    const global_Weather_data = useSelector((state) => state.global_Weather_data);
+
+
+
     return (
-    <div>ShowWeather_Globe</div>
+    <div>
+        {/* {console.log('day: ' + day.format("YYYY-MM-DD"))} */}
+        {global_Weather_data?.map(each_location =>
+                // console.log('each_location["target_data"]["daily"]: ' + JSON.stringify(each_location["target_data"]["daily"]["time"]))
+                each_location["target_data"]["daily"]["time"].map((time, index) =>
+                    time == day.format("YYYY-MM-DD") && each_location["destination"]["inputValue_address"] == each["inputValue_address"]?
+                    <div className='row border '>
+                        <div>{each_location["target_data"]["daily"]["weathercode"][index]}</div>
+                        <div>{each_location["target_data"]["daily"]["temperature_2m_max"][index]}</div>
+                    </div> : null
+                )
+
+            )
+        }
+    </div>
   )
 }
 

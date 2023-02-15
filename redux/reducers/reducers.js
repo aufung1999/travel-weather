@@ -11,10 +11,10 @@ const loadInitalDataReducer = (state = null, action) => {
     }
 }
 //######################################################################################################
-const loadGlobalDataReducer = (state = null, action) => {
+const loadGlobalDataReducer = (state = [], action) => {
     switch (action.type) {
         case 'load-Global-Weather-Data':
-            return action.payload
+            return [...state, action.payload]
         default:
             return state
     }

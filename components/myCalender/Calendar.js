@@ -10,7 +10,6 @@ import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseA
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 
 import { useAuth } from "@/context/AuthContext";
-import { hi } from "date-fns/locale";
 import ShowWeather_Globe from "./ShowWeather_Globe";
 
 const Calendar = () => {
@@ -45,14 +44,26 @@ const Calendar = () => {
   useEffect(() => {
 
     if(store_selected_days.length != 0){
+
       FireBase_STORE_selected_place_date(store_selected_days, uid, "update")
+
     }
 
   }, [store_selected_days])
 
+  useEffect(() => {   // This is to update Global weather info.
+
+    dispatch( loadGlobalDataAction(array) )
+
+  }, [array])
+
   const handle_Store_Selected = () => {
+
     dispatch( storeSelectDaysAction({validate_date: validate, inputValue_address: inputValue} ) )
+
   }
+
+
 
   return (
     <div>
@@ -111,7 +122,7 @@ const Calendar = () => {
                             <>
                             <ShowWeather day={moment(eachDate*1000)} address={each["inputValue_address"]}/>
                             <ShowWeather_Globe day={moment(eachDate*1000)} each={each} />
-                            </>: null
+                            </> : null
                           )
                         )
                       }

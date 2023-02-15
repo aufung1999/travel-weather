@@ -24,8 +24,6 @@ function ShowWeather({ day, address }) {
 
   const addBtn = useSelector((state) => state.addBtn);
 
-  //####################################################
-
   //Hello: ####################################################
 
   useEffect(() => {
