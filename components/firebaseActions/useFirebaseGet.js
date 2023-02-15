@@ -26,7 +26,7 @@ export default function useFirebaseGet(uid) {
       }
     });
     return () => unsubscribe()
-    
+
   }, [db,store_selected_days]);
 
   return { array };

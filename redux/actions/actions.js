@@ -14,7 +14,24 @@ export const loadInitalDataAction = () => {
   };
 };
 
+//###################################################################################
 
+export const loadGlobalDataAction = (each) => {
+  // Thunk Function
+  return async (dispatch, getState) => {
+
+    console.log('each: ' + JSON.stringify(each))
+  //   const response = await fetch(
+  //     "http://api.openweathermap.org/data/2.5/forecast?lat=42.985900&lon=-81.294700&appid=6e0f30fd9824b943d84e28b935ec6e4d&units=metric&cnt=40"
+  //   );
+  //   const data = await response.json();
+
+  //   dispatch({
+  //     type: "load-Global-Weather-Data",
+  //     payload: data,
+  //   });
+  };
+};
 
 //###################################################################################
 

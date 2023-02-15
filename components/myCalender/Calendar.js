@@ -5,9 +5,13 @@ import ShowWeather from "./ShowWeather";
 
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
-import { storeSelectDaysAction } from "@/redux/actions/actions";
+import { loadGlobalDataAction, storeSelectDaysAction } from "@/redux/actions/actions";
 import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
+
+import { useAuth } from "@/context/AuthContext";
+import { hi } from "date-fns/locale";
+import ShowWeather_Globe from "./ShowWeather_Globe";
 
 const Calendar = () => {
 
@@ -26,7 +30,11 @@ const Calendar = () => {
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
 
-  const {array} = useFirebaseGet(uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
+  const { user, logout } = useAuth();
+
+  const {array} = useFirebaseGet(user.uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
+  // const converted_array = array.map(each => each["validate_date"].map(inside_number => inside_number * 1000))
+
 
   useEffect(() => {
 
@@ -73,8 +81,6 @@ const Calendar = () => {
             <div className="col" key="day-Sat">Sat</div>
         </div>
 
-        {console.log('array: ' + JSON.stringify(array, null, 1))}
-
         {calendar?.map((week) => (
           <div className="row fixed border" key={"week-"+JSON.stringify(week)}>
             {week["days"].map((day) => (
@@ -87,15 +93,29 @@ const Calendar = () => {
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
-                      <ShowWeather day={day} addBtn={addBtn}  />
+                      <ShowWeather day={day} />
                     </div>
                   </div>
                   :
-                  <div className="col card h-100" style={{display: "table-cell"}} key={"unselect-" + day}>
+                  <div className="col card h-10" style={{display: "table-cell"}} key={"unselect-" + day}>
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
                       <ShowWeather day={day} addBtn={addBtn}  />
+
+                      {
+                        array?.map(each =>
+
+                          each["validate_date"].map((eachDate, index) =>
+                            eachDate == day.unix() ?
+                            <>
+                            <ShowWeather day={moment(eachDate*1000)} address={each["inputValue_address"]}/>
+                            <ShowWeather_Globe day={moment(eachDate*1000)} each={each} />
+                            </>: null
+                          )
+                        )
+                      }
+
                     </div>
                   </div>
 

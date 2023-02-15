@@ -3,12 +3,12 @@ import { useEffect, useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import findRepeated from "../reuseFunctions/findRepeated"
 import DisplayWeatherIcon from "./DisplayWeatherIcon";
 
 import { selectDaysAction, storeWeatherIconsAction } from "@/redux/actions/actions";
+import cal_Average_temp from "../reuseFunctions/cal_Average_temp";
 
-function ShowWeather({ day, addBtn }) {
+function ShowWeather({ day, address }) {
 
   const dispatch = useDispatch()
 
@@ -22,22 +22,9 @@ function ShowWeather({ day, addBtn }) {
     (state) => state.initial_Weather_data
   );
 
+  const addBtn = useSelector((state) => state.addBtn);
+
   //####################################################
-  function cal_Average_temp() {
-    let temp_array = [];
-
-    matchDay.map((time_interval) =>
-      temp_array.push(time_interval["main"]["temp"])
-    );
-
-    let average = null;
-
-    if (temp_array.length != 0) {
-      average = temp_array.reduce((a, b) => a + b) / temp_array.length;
-    }
-
-    return average;
-  }
 
   //Hello: ####################################################
 
@@ -67,9 +54,10 @@ function ShowWeather({ day, addBtn }) {
   return <>
       {
         (matchDay.length != 0)?
-        <div className="">
-          <div className="row border">{cal_Average_temp()?.toFixed(1)}</div>
-          <div className="row border"> <DisplayWeatherIcon day={day} matchDay={matchDay}/> </div>
+        <div className="row border">
+          <div className=" ">{cal_Average_temp(matchDay)?.toFixed(1)}</div>
+          <div className=" "> <DisplayWeatherIcon day={day} matchDay={matchDay}/> </div>
+          <div>{address}</div>
         </div>
       :
         null

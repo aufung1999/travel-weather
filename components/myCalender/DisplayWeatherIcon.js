@@ -21,7 +21,7 @@ function DisplayWeatherIcon({ day, matchDay }) {
 
     const interval = setInterval(() => {
       setIndex((prev) => prev + 1);
-    }, 1000000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);

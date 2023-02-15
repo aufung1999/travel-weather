@@ -7,10 +7,13 @@ import { loadInitalDataAction } from "@/redux/actions/actions";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useAuth } from "@/context/AuthContext";
+import useFirebaseGet from "@/components/firebaseActions/useFirebaseGet";
 
 
 function MyCalendar(props) {
   const { user, logout } = useAuth();
+
+  const { array } = useFirebaseGet(user.uid)
 
   const dispatch = useDispatch();
 
