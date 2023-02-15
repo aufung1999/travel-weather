@@ -120,7 +120,6 @@ const Calendar = () => {
                           each["validate_date"].map((eachDate, index) =>
                             eachDate == day.unix() ?
                             <>
-                            <ShowWeather day={moment(eachDate*1000)} address={each["inputValue_address"]}/>
                             <ShowWeather_Globe day={moment(eachDate*1000)} each={each} />
                             </> : null
                           )

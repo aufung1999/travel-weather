@@ -31,7 +31,7 @@ function ShowEvents() {
 
       {array &&
         array.map((selection, index) => (
-          <div className="d-flex">
+          <div className="d-flex" key={"ShowEvent-" + selection["inputValue_address"]}>
             <div>
               {selection["inputValue_address"]} {"  "}
               {moment.unix(selection["validate_date"][0]).format("MM/DD/YYYY")}-
