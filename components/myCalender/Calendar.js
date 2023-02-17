@@ -6,7 +6,7 @@ import ShowWeather from "./ShowWeather";
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
 import { loadGlobalDataAction, storeSelectDaysAction } from "@/redux/actions/actions";
-import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
+import { useFirebase_Post_selected } from "../firebaseActions/useFirebasePost";
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 
 import { useAuth } from "@/context/AuthContext";
@@ -45,7 +45,7 @@ const Calendar = () => {
 
     if(store_selected_days.length != 0){
 
-      FireBase_STORE_selected_place_date(store_selected_days, uid, "update")
+      useFirebase_Post_selected(store_selected_days, uid, "update")
 
       }
 
@@ -89,6 +89,7 @@ const Calendar = () => {
             <div className="col" key="day-Sun">Sun</div>
             <div className="col" key="day-Mon">Mon</div>
             <div className="col" key="day-Tue">Tue</div>
+            <div className="col" key="day-Tue">Wed</div>
             <div className="col" key="day-Thu">Thu</div>
             <div className="col" key="day-Fri">Fri</div>
             <div className="col" key="day-Sat">Sat</div>

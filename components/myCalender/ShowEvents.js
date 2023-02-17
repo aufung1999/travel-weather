@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 import moment from "moment";
-import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
+import { useFirebase_Post_selected } from "../firebaseActions/useFirebasePost";
 
 function ShowEvents() {
   const { user, logout } = useAuth();
@@ -21,7 +21,7 @@ function ShowEvents() {
         each["inputValue_address"] != selection["inputValue_address"]
     );
 
-    FireBase_STORE_selected_place_date(filtered_array, user.uid, "delete");
+    useFirebase_Post_selected(filtered_array, user.uid, "delete");
   };
 
   return (

@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import DisplayTodo from "./DisplayTodo";
 import * as uuid from "uuid";
-import { useFirebase_todo } from "../firebaseActions/firebaseActions";
+import {
+  useFirebase_Post_selected,
+  useFirebase_todo,
+} from "../firebaseActions/useFirebasePost";
 import { useAuth } from "@/context/AuthContext";
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,9 +17,10 @@ function Todo({ day }) {
   const dispatch = useDispatch();
 
   const [state, setState] = useState(false);
-  const [items, setItems] = useState([]);
-  const [isEdit, setIsEdit] = useState({ bool: false, itemID: "" });
-  const [editTodo, setEditTodo] = useState({ itemName: "", itemTime: "" });
+  const [isEdit, setIsEdit] = useState({ bool: false, itemID: "" }); // check for the edit btn is clicked and receive the current item ID
+
+  const [itemName, setItemName] = useState(""); //for the edit input
+  const [itemTime, setItemTime] = useState(""); //for the edit input
 
   const todo_data = useSelector((state) => state.todo_data);
 
@@ -29,11 +33,6 @@ function Todo({ day }) {
 
   //###################################################################################
   const getData = (data) => {
-    console.log("newItemID: " + uuid.v4());
-    // console.log("newItenName: " + data.name)
-    // console.log("newItenName: " + data.time)
-    console.log("day: " + day);
-
     const newItemID = uuid.v4();
     const newItemName = data.name;
     const newItemTime = data.time;
@@ -48,77 +47,41 @@ function Todo({ day }) {
 
     console.log("SUCCESS - obj.itemID: " + todo.itemID);
 
-    useFirebase_todo(todo, user.uid, "update");
+    useFirebase_todo(todo, user.uid, "update/add");
   };
 
   //###################################################################################
-  const removeItem = (item_del) => {
-    console.log("Remove: " + item_del.itemName);
+  const removeItem = (e, item_del) => {
+    e.preventDefault();
+    console.log("Remove: " + item_del.itemID);
 
-    const newItems = items.filter((each) => {
-      return each.itemID !== item_del.itemID;
-    });
-
-    setItems((oldArray) => [...newItems]);
+    useFirebase_todo(item_del, user.uid, "delete");
   };
 
   //###################################################################################
-  const EditItemName = (e, item) => {
-    console.log("--------------------BEFORE---------------------");
-    console.log("Edit NAME: " + item.itemName);
-    console.log("Edit ID: " + item.itemID);
-    console.log("--------------------BEFORE---------------------");
 
-    item.itemName = e.target.value;
-
-    setEditTodo((previousState) => {
-      return { ...previousState, itemName: e.target.value };
-    });
-
-    console.log("--------------------AFTER---------------------");
-    console.log("Edit NAME: " + item.itemName);
-    console.log("Edit NAME: " + editTodo.itemName);
-    console.log("Edit ID: " + item.itemID);
-    console.log("--------------------AFTER---------------------");
-  };
-  //###################################################################################
-
-  const EditItemTime = (e, item) => {
-    console.log("--------------------BEFORE---------------------");
-    console.log("Edit TIME: " + item.itemTime);
-    console.log("--------------------BEFORE---------------------");
-
-    // setEditTodo(e.target.value)
-    item.itemTime = e.target.value;
-
-    setEditTodo((previousState) => {
-      return { ...previousState, itemTime: item.itemTime };
-    });
-
-    console.log("--------------------AFTER---------------------");
-    console.log("Edit TIME: " + item.itemTime);
-    console.log("--------------------AFTER---------------------");
-  };
-  //###################################################################################
-  const editView = (item) => {
+  const editView = (e, item) => {
     console.log("Edit Clicked");
+    console.log('item["itemID"]: ' + item.itemID);
 
     setIsEdit((previousState) => {
-      return { ...previousState, bool: !isEdit.bool, itemID: item.itemID };
+      return { ...previousState, bool: !isEdit.bool, itemID: item.itemID }
     });
-    // }
 
-    // setEditTodo(item.itemName)
-    setEditTodo((previousState) => {
-      return {
-        ...previousState,
-        itemName: item.itemName,
-        itemTime: item.itemTime,
-      };
-    });
-    // console.log("isEdit.bool: " + isEdit.bool)
-    // console.log("isEdit.itemID: " + isEdit.itemID)
+    setItemName(item["itemName"]);
+    setItemTime(item["itemTime"]);
   };
+
+  //###################################################################################
+
+  const submitHandle = (e, item) => {
+    e.preventDefault()
+    item["itemName"] = itemName
+    item["itemTime"] = itemTime
+    useFirebase_todo(item, user.uid, "update/add")
+    
+  }
+
   //###################################################################################
   return (
     <div key={uuid.v4()}>
@@ -132,31 +95,33 @@ function Todo({ day }) {
         {state && <DisplayTodo onSubmitt={getData} />}
       </div>
 
-      {array.length != 0 && array.map((todo) => <div>{todo["itemName"]} {todo["itemTime"]}</div>)}
+      {/* {array.length != 0 && array.map((todo) => <div>{todo["itemName"]} {todo["itemTime"]}</div>)} */}
 
-      {state && (
+      {array.length != 0 && (
         <div>
-          {items.map((item) => (
+          {array.map((item) => (
             <li className="App" key={item.itemID}>
               {isEdit.bool && item.itemID === isEdit.itemID ? (
-                <>
+                <form onSubmit={(e) => submitHandle(e, item)}>
                   <input
+                    autoFocus
                     type="text"
-                    value={editTodo.itemName}
-                    onChange={(e) => EditItemName(e, item)}
+                    value={itemName}
+                    onChange={(e) => setItemName(e.target.value)}
                   />
                   <input
                     type="time"
-                    value={editTodo.itemTime}
-                    onChange={(e) => EditItemTime(e, item)}
+                    value={itemTime}
+                    onChange={(e) => setItemTime(e.target.value)}
                   />
-                </>
+                  <button type="submit">Change</button>
+                </form>
               ) : (
                 item.itemName + item.itemTime
               )}
 
-              <button onClick={(e) => removeItem(item)}>Delete</button>
-              <button onClick={(e) => editView(item)}>Edit</button>
+              <button onClick={(e) => removeItem(e, item)}>Delete</button>
+              <button onClick={(e) => editView(e, item)}>Edit</button>
             </li>
           ))}
         </div>
