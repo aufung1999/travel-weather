@@ -4,13 +4,12 @@ import { useAuth } from "@/context/AuthContext";
 
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 import moment from "moment";
-import useFirebaseDelete from "../firebaseActions/useFirebaseDelete";
 import { FireBase_STORE_selected_place_date } from "../firebaseActions/firebaseActions";
 
 function ShowEvents() {
   const { user, logout } = useAuth();
 
-  const { array } = useFirebaseGet(user.uid);
+  const { array } = useFirebaseGet(user.uid, "selected_place_date");
 
   const Delete_from_Firebase = (e, selection) => {
     e.preventDefault();

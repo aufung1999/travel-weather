@@ -46,17 +46,18 @@ export const loadGlobalDataAction = (each) => {
           })
         )
 
-        // console.log('response: ' + response)
-
-        // return Promise(response)
-
       })
     )
 
-    // console.log('responses: ' + JSON.stringify(responses))
+  };
+};
 
+//###################################################################################
 
-
+export const loadTodosAction = (data) => {
+  return {
+    type: "load-Todos-Data",
+    payload: data
   };
 };
 

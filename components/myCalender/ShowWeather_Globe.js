@@ -1,10 +1,7 @@
 import React from 'react'
 
-import moment from 'moment';
-
 import { useDispatch, useSelector } from 'react-redux'
 
-import { loadGlobalDataAction } from '@/redux/actions/actions'
 import { code_pic } from '../reuseFunctions/code_pic';
 
 function ShowWeather_Globe( {day, each} ) {

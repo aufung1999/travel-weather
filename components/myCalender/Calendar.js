@@ -11,6 +11,7 @@ import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 
 import { useAuth } from "@/context/AuthContext";
 import ShowWeather_Globe from "./ShowWeather_Globe";
+import Todo from "./Todo";
 
 const Calendar = () => {
 
@@ -25,13 +26,12 @@ const Calendar = () => {
 
   const [calendar, currentDay] = CurrentTime(clicked); // This is a imported Function
 
-  const [selectDayBtn, isSelectDayBtn] = useState(false)
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
 
   const { user, logout } = useAuth();
 
-  const {array} = useFirebaseGet(user.uid) // CUSTOM Hook, and the uid is from REdux, not from useAuth
+  const {array} = useFirebaseGet(user.uid, "selected_place_date", null) // CUSTOM Hook, and the uid is from REdux, not from useAuth
   // const converted_array = array.map(each => each["validate_date"].map(inside_number => inside_number * 1000))
 
 
@@ -47,13 +47,15 @@ const Calendar = () => {
 
       FireBase_STORE_selected_place_date(store_selected_days, uid, "update")
 
-    }
+      }
 
   }, [store_selected_days])
 
-  useEffect(() => {   // This is to update Global weather info.
+  useEffect(() => {   //This is to update Global weather info.
 
-    dispatch( loadGlobalDataAction(array) )
+    if(array){
+      dispatch( loadGlobalDataAction(array) )
+      }
 
   }, [array])
 
@@ -112,7 +114,7 @@ const Calendar = () => {
                     <div>{day.format("DD-MM")}</div>
 
                     <div className="card-body ">
-                      <ShowWeather day={day} addBtn={addBtn}  />
+                      {day?<ShowWeather day={day} addBtn={addBtn}  /> : null}
 
                       {
                         array?.map(each =>
@@ -125,6 +127,8 @@ const Calendar = () => {
                           )
                         )
                       }
+
+                      {(day!=undefined)?<Todo day={day.format("YYYY-MM-DD")}/>:null}
 
                     </div>
                   </div>

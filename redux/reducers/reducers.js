@@ -20,6 +20,17 @@ const loadGlobalDataReducer = (state = [], action) => {
     }
 }
 //######################################################################################################
+const loadTodosReducer = (state = [], action) => {
+    switch (action.type) {
+        case 'load-Todos-Data':
+            return [...state, action.payload]
+        default:
+            return state
+    }
+}
+
+
+//######################################################################################################
 
 const uidReducer = (state = null, action) => {
     switch (action.type) {
@@ -100,6 +111,8 @@ const reducers = combineReducers({
     initial_Weather_data: loadInitalDataReducer,
 
     global_Weather_data: loadGlobalDataReducer,
+
+    todo_data: loadTodosReducer,
 
     // """""""""""""""""useless"""""""""""""""""
     WeatherIcons_data:  storeWeatherIconsReducer,
