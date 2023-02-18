@@ -4,42 +4,56 @@ import React from "react";
 function DisplayTodo(props) {
   const [Infos, setInfos] = useState({
     name: "Default",
-    time: "00:00",
+    startTime: "01:00",
+    endTime: "09.00",
   });
-
-  const handleNameEvent = (event) => {
-    const getName = event.target.value;
-    console.log("name:" + getName);
-
-    setInfos((prev) => {
-      return { ...prev, name: getName };
-    });
-  };
-
-  const handleTimeEvent = (event) => {
-    const getTime = event.target.value;
-    console.log("time:" + getTime);
-
-    setInfos((prev) => {
-      return { ...prev, time: getTime };
-    });
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Infos.name:" + Infos.name);
-    console.log("Infos.time:" + Infos.time);
+
+    
 
     props.onSubmitt(Infos);
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input type="text" value={Infos.name} onChange={handleNameEvent} />
+      <div class="form-group row">
+        <div class="col-xs-2">
+          <input
+            type="text"
+            value={Infos.name}
+            onChange={(e) =>
+              setInfos({ ...Infos, name: e.target.value })
+            }
+            class="form-control"
+          />
+        </div>
+        <div class="col-xs-2">
+          <div className="d-flex">
+            <input
+              type="text"
+              value={Infos.startTime}
+              onChange={(e) =>
+                setInfos({ ...Infos, startTime: e.target.value })
+              }
+              class="form-control"
+            />
 
-      <input type="time" value={Infos.time} onChange={handleTimeEvent} />
-
-      <input type="submit" />
+            <input
+              type="text"
+              value={Infos.endTime}
+              onChange={(e) =>
+                setInfos({ ...Infos, endTime: e.target.value })
+              }
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col-xs-2">
+          <input type="submit" />
+        </div>
+      </div>
     </form>
   );
 }

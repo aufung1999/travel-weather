@@ -8,28 +8,19 @@ import {
 import { useAuth } from "@/context/AuthContext";
 import useFirebaseGet from "../firebaseActions/useFirebaseGet";
 import { useDispatch, useSelector } from "react-redux";
+import Modal from "./Modal";
 
 function Todo({ day }) {
   const { user, logout } = useAuth();
 
   const array = useFirebaseGet(user.uid, "todos", day);
 
-  const dispatch = useDispatch();
-
+  const [isOpen, setIsOpen] = useState(false)
   const [state, setState] = useState(false);
   const [isEdit, setIsEdit] = useState({ bool: false, itemID: "" }); // check for the edit btn is clicked and receive the current item ID
 
   const [itemName, setItemName] = useState(""); //for the edit input
-  const [itemTime, setItemTime] = useState(""); //for the edit input
-
-  const todo_data = useSelector((state) => state.todo_data);
-
-  // const [count, setCount] = useState(0);
-
-  function showAdd() {
-    console.log("Clicked");
-    setState(!state);
-  }
+  const [itemTime, setItemTime] = useState({ startTime: "", endTime: "" }); //for the edit input
 
   //###################################################################################
   const getData = (data) => {
@@ -65,7 +56,7 @@ function Todo({ day }) {
     console.log('item["itemID"]: ' + item.itemID);
 
     setIsEdit((previousState) => {
-      return { ...previousState, bool: !isEdit.bool, itemID: item.itemID }
+      return { ...previousState, bool: !isEdit.bool, itemID: item.itemID };
     });
 
     setItemName(item["itemName"]);
@@ -75,34 +66,37 @@ function Todo({ day }) {
   //###################################################################################
 
   const submitHandle = (e, item) => {
-    e.preventDefault()
-    item["itemName"] = itemName
-    item["itemTime"] = itemTime
-    useFirebase_todo(item, user.uid, "update/add")
-    
-  }
+    e.preventDefault();
+    item["itemName"] = itemName;
+    item["itemTime"] = itemTime;
+    useFirebase_todo(item, user.uid, "update/add");
+  };
 
   //###################################################################################
   return (
     <div key={uuid.v4()}>
       <div className="App">
-        <button type="button" className="button" onClick={showAdd}>
+        <button type="button" className="button" onClick={() => setIsOpen(!state)}>
           Add
         </button>
       </div>
 
       <div style={{ textAlign: "center" }}>
-        {state && <DisplayTodo onSubmitt={getData} />}
+        {
+          <Modal  open={isOpen} onClose={() => setIsOpen(false)}>
+            <DisplayTodo onSubmitt={getData} />
+          </Modal>
+        }
       </div>
 
       {/* {array.length != 0 && array.map((todo) => <div>{todo["itemName"]} {todo["itemTime"]}</div>)} */}
 
       {array.length != 0 && (
         <div>
-          {array.map((item) => (
-            <li className="App" key={item.itemID}>
-              {isEdit.bool && item.itemID === isEdit.itemID ? (
-                <form onSubmit={(e) => submitHandle(e, item)}>
+          {array.map((todo) => (
+            <li className="App" key={todo.itemID}>
+              {isEdit.bool && todo.itemID === isEdit.itemID ? (
+                <form onSubmit={(e) => submitHandle(e, todo)}>
                   <input
                     autoFocus
                     type="text"
@@ -111,17 +105,26 @@ function Todo({ day }) {
                   />
                   <input
                     type="time"
-                    value={itemTime}
-                    onChange={(e) => setItemTime(e.target.value)}
+                    value={itemTime.startTime}
+                    onChange={(e) =>
+                      setItemTime({ ...itemTime, startTime: e.target.value })
+                    }
+                  />
+                  <input
+                    type="time"
+                    value={itemTime.endTime}
+                    onChange={(e) =>
+                      setItemTime({ ...itemTime, endTime: e.target.value })
+                    }
                   />
                   <button type="submit">Change</button>
                 </form>
               ) : (
-                item.itemName + item.itemTime
+                todo.itemName + todo.itemTime
               )}
 
-              <button onClick={(e) => removeItem(e, item)}>Delete</button>
-              <button onClick={(e) => editView(e, item)}>Edit</button>
+              <button onClick={(e) => removeItem(e, todo)}>Delete</button>
+              <button onClick={(e) => editView(e, todo)}>Edit</button>
             </li>
           ))}
         </div>
