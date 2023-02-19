@@ -36,11 +36,11 @@ export const loadGlobalDataAction = (each_location) => {
     fetch(
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&daily=weathercode,temperature_2m_max,temperature_2m_min&current_weather=true&timezone=auto&start_date=${start_date}&end_date=${end_date}`
     )
-      .then((res) => res.json()) 
+      .then((res) => res.json())
       .then((data) =>
         dispatch({
           type: "load-Global-Weather-Data",
-          payload: { target_data: data, destination: each_location },
+          payload: { target_data: data, destination: each_location },  
         })
       );
   };

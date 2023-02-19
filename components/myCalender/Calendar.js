@@ -89,7 +89,7 @@ const Calendar = () => {
 
                 <div className="col border bg" key={"day-" + day} style={{display: "table"}}>
                   {
-                    validate?.includes(day.unix()*1000) && addBtn == true
+                    validate?.includes(day.unix()*1000) && addBtn == true //TIME
                     ?
                     <div className="col card bg-primary h-100" style={{display: "table-cell"}} key={"select-" + day}>
                       <div>{day.format("DD-MM")}</div>

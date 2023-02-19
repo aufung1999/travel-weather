@@ -20,7 +20,7 @@ function validateSelectedDays(selected_days, calendar) {
             // console.log('Smaller:       ' + selected_days.at(-2))
             // console.log("day.unix():    " + day.unix());
             // console.log('Larger:        ' + selected_days.at(-1))
-            return_array.push(day.unix()*1000)
+            return_array.push(day.unix()*1000)     //TIME
           }
         });
       });

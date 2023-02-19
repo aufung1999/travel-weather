@@ -1,6 +1,8 @@
 import { db } from "@/config/firebase";
 import { useAuth } from "@/context/AuthContext";
-import React, { useEffect, useRef, useState } from "react";
+import { loadGlobalDataAction } from "@/redux/actions/actions";
+import moment from "moment";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useFirebaseGet_Selected } from "../firebaseActions/useFirebaseGet";
@@ -12,21 +14,20 @@ function ShowWeather_Globe({ day }) {
 
   const global_Weather_data = useSelector((state) => state.global_Weather_data);
 
-  const [matchDay, setMatchDay] = useState([]);
+  const dispatch = useDispatch();
 
-  const shouldLog = useRef(true);
-
-  // console.log('day: ' + day)
-
-  const { array } = useFirebaseGet_Selected(user.uid, day.toString()); // CUSTOM Hook, and the uid is from REdux, not from useAuth
+  const array = useFirebaseGet_Selected(user.uid, day); // CUSTOM Hook, and the uid is from REdux, not from useAuth
 
   useEffect(() => {
-    //This is to update Global weather info.
-    console.log('array: ' + JSON.stringify(array))
+    array.map((each_selected) =>
+      // console.log("each_selected: " + each_selected["validate_date"].findIndex(ele => ele == day.unix()*1000)   );
+      dispatch(loadGlobalDataAction(each_selected))
+    );
+  }, [array]);
 
-  }, []);
-
-  return <div></div>;
+  return (
+    <div>{/* {console.log("matchDay: " + JSON.stringify(matchDay))} */}</div>
+  );
 }
 
 export default React.memo(ShowWeather_Globe);

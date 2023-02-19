@@ -13,29 +13,50 @@ import {
 } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { useSelector } from "react-redux";
+import moment from "moment";
 
 export function useFirebaseGet_Selected(uid, day_timestamp) {
   const [array, setReturn_array] = useState([]);
 
-  const q = query(
-    collection(db, "users", uid, "selected_place_date"),
-    where("validate_date", "array-contains", day_timestamp)
-  );
+  if (day_timestamp != null) {
+    const q = query(
+      collection(db, "users", uid, "selected_place_date"),
+      where("validate_date", "array-contains", day_timestamp.unix() * 1000)
+    );
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const cities = [];
-      querySnapshot.forEach((doc) => {
-        console.log('doc.data(): ' + JSON.stringify(doc.data()))
-        cities.push(doc.data());
+    useEffect(() => {
+      const unsubscribe =
+      onSnapshot(q, (querySnapshot) => {
+        const cities = [];
+        querySnapshot.docs.forEach((doc) => {
+          // console.log("doc.data(): " + JSON.stringify(doc.data()));
+          cities.push(doc.data());
+        });
+        setReturn_array(cities);
       });
-      console.log('cities: ' + cities)
-      setReturn_array(cities);
-    });
-    return () => unsubscribe();
-  }, [db]);
+      return () => unsubscribe();
+    }, []);
+    return array;
+    
+  } else {
+    const q = collection(db, "users", uid, "selected_place_date");
 
-  return { array };
+    useEffect(() => {
+      const unsubscribe =
+      onSnapshot(q, (querySnapshot) => {
+        const cities = [];
+        querySnapshot.docs.forEach((doc) => {
+          console.log("doc.data(): " + JSON.stringify(doc.data()));
+          cities.push(doc.data());
+        });
+        console.log("cities: " + cities);
+        setReturn_array(cities);
+      });
+      return () => unsubscribe();
+    }, []);
+
+    return array;
+  }
 }
 
 //##########################################################################################

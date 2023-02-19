@@ -11,11 +11,21 @@ const loadInitalDataReducer = (state = null, action) => {
 };
 //######################################################################################################
 const loadGlobalDataReducer = (state = [], action) => {
-    console.log('       action.payload: ' + JSON.stringify(action.payload))
-    console.log('state: ' + JSON.stringify(state,null,1))
   switch (action.type) {
     case "load-Global-Weather-Data":
-      return [...state, action.payload];
+      let bool_l;
+
+      bool_l = state.some(
+        (each) =>
+          each["destination"]["inputValue_address"] == action.payload["destination"]["inputValue_address"]
+          &&
+          each["destination"]["validate_date"][0] == action.payload["destination"]["validate_date"][0]
+          &&
+          each["destination"]["validate_date"].at(-1) == action.payload["destination"]["validate_date"].at(-1)
+      );
+      console.log("bool_l: " + bool_l);
+      return bool_l ? state : [...state, action.payload];
+
     case "CLEANUP_GlobalWeather":
       return [];
     default:
