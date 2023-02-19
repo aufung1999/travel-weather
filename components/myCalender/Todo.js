@@ -2,18 +2,17 @@ import React, { useState, useEffect } from "react";
 import DisplayTodo from "./DisplayTodo";
 import * as uuid from "uuid";
 import {
-  useFirebase_Post_selected,
   useFirebase_todo,
 } from "../firebaseActions/useFirebasePost";
 import { useAuth } from "@/context/AuthContext";
-import useFirebaseGet from "../firebaseActions/useFirebaseGet";
+import useFirebaseGet, { useFirebaseGet_todo } from "../firebaseActions/useFirebaseGet";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 
 function Todo({ day }) {
   const { user, logout } = useAuth();
 
-  const array = useFirebaseGet(user.uid, "todos", day);
+  const {array_todo} = useFirebaseGet_todo(user.uid, day);
 
   const [isOpen, setIsOpen] = useState(false)
   const [state, setState] = useState(false);
@@ -26,13 +25,15 @@ function Todo({ day }) {
   const getData = (data) => {
     const newItemID = uuid.v4();
     const newItemName = data.name;
-    const newItemTime = data.time;
+    const newItemStartTime = data.startTime;
+    const newItemEndTime = data.endTime;    
     const newItemDay = day;
 
     const todo = {
       itemID: newItemID,
       itemName: newItemName,
-      itemTime: newItemTime,
+      itemStartTime: newItemStartTime,
+      itemEndTime: newItemEndTime,
       date: newItemDay,
     };
 
@@ -91,9 +92,9 @@ function Todo({ day }) {
 
       {/* {array.length != 0 && array.map((todo) => <div>{todo["itemName"]} {todo["itemTime"]}</div>)} */}
 
-      {array.length != 0 && (
+
         <div>
-          {array.map((todo) => (
+          {array_todo?.map((todo) => (
             <li className="App" key={todo.itemID}>
               {isEdit.bool && todo.itemID === isEdit.itemID ? (
                 <form onSubmit={(e) => submitHandle(e, todo)}>
@@ -120,7 +121,7 @@ function Todo({ day }) {
                   <button type="submit">Change</button>
                 </form>
               ) : (
-                todo.itemName + todo.itemTime
+                todo.itemName + todo.itemStartTime + todo.itemEndTime
               )}
 
               <button onClick={(e) => removeItem(e, todo)}>Delete</button>
@@ -128,7 +129,6 @@ function Todo({ day }) {
             </li>
           ))}
         </div>
-      )}
     </div>
   );
 }

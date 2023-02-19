@@ -19,19 +19,17 @@ import { db } from "@/config/firebase";
 
 import { useSelector } from "react-redux";
 
-export function useFirebase_Post_selected(store_selected_days, uid, arguement) {
+export function useFirebase_Post_selected(store_selected_day, uid, arguement) {
   switch (arguement) {
     case "update":
-      const dbRef_update = doc(db, "users", uid);
-      updateDoc(dbRef_update, {
-        selected_place_date: arrayUnion(...store_selected_days), //because this is an array to merge together, I need to use spread operator to deconstruct array format
-      });
+      const dbRef_update = collection(db, "users", uid, "selected_place_date");
+      addDoc(dbRef_update, store_selected_day); //because this is an array to merge together, I need to use spread operator to deconstruct array format
       break;
 
     case "delete":
       const dbRef_delete = doc(db, "users", uid);
       updateDoc(dbRef_delete, {
-        selected_place_date: store_selected_days,
+        selected_place_date: store_selected_day,
       });
       break;
   }

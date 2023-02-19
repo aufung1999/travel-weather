@@ -14,45 +14,51 @@ import {
 import { db } from "@/config/firebase";
 import { useSelector } from "react-redux";
 
-export default function useFirebaseGet(uid, argument, date) {
-  const store_selected_days = useSelector((state) => state.store_selected_days);
-  console.log("     date: " + date);
+export function useFirebaseGet_Selected(uid, day_timestamp) {
   const [array, setReturn_array] = useState([]);
 
-  switch (argument) {
-    case "selected_place_date":
-      const colRef = doc(db, "users", uid); // case "selected_place_date"
-      useEffect(() => {
-        const unsubscribe = onSnapshot(colRef, (doc) => {
-          if (doc.data()) {
-            setReturn_array([...doc.data().selected_place_date]);
-          }
-        });
-        return () => unsubscribe();
-      }, [db, store_selected_days]);
+  const q = query(
+    collection(db, "users", uid, "selected_place_date"),
+    where("validate_date", "array-contains", day_timestamp)
+  );
 
-      return { array };
+  useEffect(() => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        console.log('doc.data(): ' + JSON.stringify(doc.data()))
+        cities.push(doc.data());
+      });
+      console.log('cities: ' + cities)
+      setReturn_array(cities);
+    });
+    return () => unsubscribe();
+  }, [db]);
 
-    case "todos":
-      const q = query(
-        collection(db, "users", uid, "todos"),
-        where("date", "==", date)
-      ); //case "todos":
-
-      useEffect(() => {
-        const unsubscribe = onSnapshot(q, (querySnapshot) => {
-          const cities = [];
-          querySnapshot.forEach((doc) => {
-            cities.push(doc.data());
-          });
-
-          setReturn_array(cities);
-        });
-        return () => unsubscribe();
-      }, [db]);
-
-      return array;
-  }
+  return { array };
 }
 
 //##########################################################################################
+
+export function useFirebaseGet_todo(uid, date) {
+  const [array, setReturn_array] = useState([]);
+
+  const q = query(
+    collection(db, "users", uid, "todos"),
+    where("date", "==", date)
+  ); //case "todos":
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const cities = [];
+      querySnapshot.forEach((doc) => {
+        cities.push(doc.data());
+      });
+
+      setReturn_array(cities);
+    });
+    return () => unsubscribe();
+  }, [db]);
+
+  return { array };
+}
