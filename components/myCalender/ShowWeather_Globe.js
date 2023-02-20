@@ -1,7 +1,6 @@
 import { db } from "@/config/firebase";
 import { useAuth } from "@/context/AuthContext";
 import { loadGlobalDataAction } from "@/redux/actions/actions";
-import moment from "moment";
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +29,7 @@ function ShowWeather_Globe({ day }) {
 
   useEffect(() => {
     array.map((each_selected) => dispatch(loadGlobalDataAction(each_selected)));
-  }, [array]);
+  }, [array, db]);
 
   return (
     <div>

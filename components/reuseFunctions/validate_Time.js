@@ -20,7 +20,7 @@ export default function validate_Time(infos) {
     infos.startTime_hr = "0" + infos.startTime_hr;
   }
   if (infos.startTime_min.length == 1) {
-    infos.startTime_min = "0" + infos.startTime_min; 
+    infos.startTime_min = "0" + infos.startTime_min;
   }
   if (infos.endTime_hr.length == 1) {
     infos.endTime_hr = "0" + infos.endTime_hr;

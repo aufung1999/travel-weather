@@ -12,7 +12,8 @@ import Modal from "./Modal";
 function Todo({ day }) {
   const { user, logout } = useAuth();
 
-  const {array_todo} = useFirebaseGet_todo(user.uid, day);
+  const array_todo = useFirebaseGet_todo(user.uid, day);
+  array_todo.sort((a, b) => a["itemStartTime"] > b["itemEndTime"] ? 1 : -1) // to sort the timing
 
   const [isOpen, setIsOpen] = useState(false)
   const [state, setState] = useState(false);
@@ -26,7 +27,7 @@ function Todo({ day }) {
     const newItemID = uuid.v4();
     const newItemName = data.name;
     const newItemStartTime = data.startTime;
-    const newItemEndTime = data.endTime;    
+    const newItemEndTime = data.endTime;
     const newItemDay = day;
 
     const todo = {
@@ -61,7 +62,7 @@ function Todo({ day }) {
     });
 
     setItemName(item["itemName"]);
-    setItemTime(item["itemTime"]);
+    setItemTime({ startTime: item["itemStartTime"], endTime: item["itemEndTime"] });
   };
 
   //###################################################################################
@@ -69,14 +70,16 @@ function Todo({ day }) {
   const submitHandle = (e, item) => {
     e.preventDefault();
     item["itemName"] = itemName;
-    item["itemTime"] = itemTime;
+    item["itemStartTime"] = itemTime["startTime"].replace(":",""); // make sure its NUMBER before storing in firebase
+    item["itemEndTime"] = itemTime["endTime"].replace(":","");
     useFirebase_todo(item, user.uid, "update/add");
+    setIsEdit({ bool: false, itemID: "" })
   };
 
   //###################################################################################
   return (
     <div key={uuid.v4()}>
-      <div className="App">
+      <div className="">
         <button type="button" className="button" onClick={() => setIsOpen(!state)}>
           Add
         </button>
@@ -89,14 +92,11 @@ function Todo({ day }) {
           </Modal>
         }
       </div>
-
-      {/* {array.length != 0 && array.map((todo) => <div>{todo["itemName"]} {todo["itemTime"]}</div>)} */}
-
-
         <div>
           {array_todo?.map((todo) => (
-            <li className="App" key={todo.itemID}>
-              {isEdit.bool && todo.itemID === isEdit.itemID ? (
+            <div className="border border-primary m-1" key={todo.itemID}>
+              {isEdit.bool && todo.itemID === isEdit.itemID ?
+              (
                 <form onSubmit={(e) => submitHandle(e, todo)}>
                   <input
                     autoFocus
@@ -120,13 +120,17 @@ function Todo({ day }) {
                   />
                   <button type="submit">Change</button>
                 </form>
-              ) : (
-                todo.itemName + todo.itemStartTime + todo.itemEndTime
-              )}
+              )
+              :<div className="flex-wrap">
+                <div>{todo.itemName}</div>
+                <div>{todo.itemStartTime}</div>
+                <div>{todo.itemEndTime}</div>
+                </div>
+              }
+              <div><button onClick={(e) => removeItem(e, todo)}>Delete</button></div>
+              <div><button onClick={(e) => editView(e, todo)}>Edit</button></div>
 
-              <button onClick={(e) => removeItem(e, todo)}>Delete</button>
-              <button onClick={(e) => editView(e, todo)}>Edit</button>
-            </li>
+            </div>
           ))}
         </div>
     </div>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import moment from "moment/moment";
 import CurrentTime from "./CurrentTime";
 import ShowWeather from "./ShowWeather";
 
+import styles from '@/styles/Calendar.module.css';
+
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
-import { loadGlobalDataAction, storeSelectDaysAction } from "@/redux/actions/actions";
+import { storeSelectDaysAction } from "@/redux/actions/actions";
 import { useFirebase_Post_selected } from "../firebaseActions/useFirebasePost";
-import { useFirebaseGet_Selected } from "../firebaseActions/useFirebaseGet";
 
 import { useAuth } from "@/context/AuthContext";
 import ShowWeather_Globe from "./ShowWeather_Globe";
@@ -21,7 +21,6 @@ const Calendar = () => {
   const selected_days = useSelector((state) => state.selected_days);
   const store_selected_days = useSelector((state) => state.store_selected_days);
   const addBtn = useSelector((state) => state.addBtn);
-  const global_Weather_data = useSelector((state) => state.global_Weather_data);
 
   const [clicked, isClicked] = useState(0)
 
@@ -29,8 +28,6 @@ const Calendar = () => {
 
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
-
-  const shouldLog = useRef(true)
 
   const { user, logout } = useAuth();
 
@@ -52,10 +49,12 @@ const Calendar = () => {
 
     dispatch( storeSelectDaysAction({validate_date: validate, inputValue_address: inputValue} ) )
 
+    setValidate([])
+
   }
 
   return (
-    <section className="bg-dark d-flex justify-content-center align-items-center h-100 min-vh-100">
+    <section className="bg-light ">
       <div className="container">
         <div className="d-flex">
           <div>
@@ -63,7 +62,7 @@ const Calendar = () => {
             <button onClick={() => { isClicked(prev => prev + 1)}}  >Next month</button>
           </div>
           <div>
-            <button className="ms-5" onClick={() => { dispatch( {type: "addBtn-is-Clicked"} ) }} >Select Day</button>
+            <button className="ms-5" onClick={() => { dispatch( {type: "addBtn-is-Clicked"} ), setValidate([]) }} >Select Day</button>
             {addBtn && <input type='text' value = {inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="place"></input>}
             {addBtn && <button className="ms-5" onClick={ handle_Store_Selected } >Store Selected Days</button>}
           </div>
@@ -71,7 +70,7 @@ const Calendar = () => {
 
         <div>{currentDay.format("MM-YYYY")}</div>
 
-        <div className="container-fluid">
+        <div className="container">
 
           <div className="row " >
               <div className="col" key="day-Sun">Sun</div>
@@ -91,7 +90,7 @@ const Calendar = () => {
                   {
                     validate?.includes(day.unix()*1000) && addBtn == true //TIME
                     ?
-                    <div className="col card bg-primary h-100" style={{display: "table-cell"}} key={"select-" + day}>
+                    <div className="" style={{display: "table-cell"}} key={"select-" + day}>
                       <div>{day.format("DD-MM")}</div>
 
                       <div className="card-body ">
@@ -99,16 +98,18 @@ const Calendar = () => {
                       </div>
                     </div>
                     :
-                    <div className="col card h-10" style={{display: "table-cell"}} key={"unselect-" + day}>
+                    <div className={styles.fixed}
+                    // style={{display: "table-cell"}}   //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
+                    key={"unselect-" + day}>
                       <div>{day.format("DD-MM")}</div>
 
-                      <div className="card-body ">
+                      <div className="">
                         {day?<ShowWeather day={day} addBtn={addBtn}  /> : null}
 
 
                         {day?<ShowWeather_Globe day={day} /> : null }
 
-                        {(day!=undefined)?<Todo day={day.format("YYYY-MM-DD")}/>:null}
+                        {day?<Todo day={day.format("YYYY-MM-DD")}/>:null}
 
                       </div>
                     </div>
