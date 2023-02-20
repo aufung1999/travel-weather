@@ -23,8 +23,9 @@ const Calendar = () => {
   const addBtn = useSelector((state) => state.addBtn);
 
   const [clicked, isClicked] = useState(0)
+  const [switchLayout, setSwitchLayout] = useState('monthly')
 
-  const [calendar, currentDay] = CurrentTime(clicked); // This is a imported Function
+  const [calendar, currentDay] = CurrentTime(clicked, switchLayout); // This is a imported Function
 
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
@@ -56,19 +57,23 @@ const Calendar = () => {
   return (
     <section className="bg-light ">
       <div className="container">
-        <div className="d-flex">
-          <div>
+        <div className="row">
+          <div className="col d-flex justify-content-start">
             <button onClick={() => { isClicked(prev => prev - 1)}}  >Last month</button>
             <button onClick={() => { isClicked(prev => prev + 1)}}  >Next month</button>
           </div>
-          <div>
+          <div className="col">
             <button className="ms-5" onClick={() => { dispatch( {type: "addBtn-is-Clicked"} ), setValidate([]) }} >Select Day</button>
             {addBtn && <input type='text' value = {inputValue} onChange={(e) => setInputValue(e.target.value)} placeholder="place"></input>}
             {addBtn && <button className="ms-5" onClick={ handle_Store_Selected } >Store Selected Days</button>}
           </div>
+          <div className="col d-flex justify-content-end">
+            <button onClick={() => setSwitchLayout(prev => "weekly")}>Weekly</button>
+            <button onClick={() => setSwitchLayout(prev => "monthly")}>Monthly</button>
+          </div>
         </div>
 
-        <div>{currentDay.format("MM-YYYY")}</div>
+        <div>{currentDay.format("YYYY-MM")}</div>
 
         <div className="container">
 
