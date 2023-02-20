@@ -12,21 +12,40 @@ import { code_pic } from "../reuseFunctions/code_pic";
 function ShowWeather_Globe({ day }) {
   const { user, logout } = useAuth();
 
+  //##################################################################################################
+  //To select data!!!! Mainly make the jsx part becomes more "easy to look"
   const global_Weather_data = useSelector((state) => state.global_Weather_data);
+
+  const find_data = global_Weather_data?.find((each_selected) => {
+    return each_selected["destination"]["validate_date"].some(
+      (each_date) => each_date == day.unix() * 1000
+    );
+  });
+
+  //##################################################################################################
 
   const dispatch = useDispatch();
 
   const array = useFirebaseGet_Selected(user.uid, day); // CUSTOM Hook, and the uid is from REdux, not from useAuth
 
   useEffect(() => {
-    array.map((each_selected) =>
-      // console.log("each_selected: " + each_selected["validate_date"].findIndex(ele => ele == day.unix()*1000)   );
-      dispatch(loadGlobalDataAction(each_selected))
-    );
+    array.map((each_selected) => dispatch(loadGlobalDataAction(each_selected)));
   }, [array]);
 
   return (
-    <div>{/* {console.log("matchDay: " + JSON.stringify(matchDay))} */}</div>
+    <div>
+      {find_data &&
+        find_data["target_data"]["daily"]["time"].map((each_time, index) =>
+          each_time == day.format("YYYY-MM-DD") ? (
+            <div className="row">
+              <div>{find_data["destination"]["inputValue_address"]}</div>
+              <div className="col">Highest: {find_data["target_data"]["daily"]["temperature_2m_max"][index]}</div>
+              <div className="col">Lowest: {find_data["target_data"]["daily"]["temperature_2m_min"][index]}</div>
+              <div className="col">{code_pic(find_data["target_data"]["daily"]["weathercode"][index])}</div>
+            </div>
+          ) : null
+        )}
+    </div>
   );
 }
 

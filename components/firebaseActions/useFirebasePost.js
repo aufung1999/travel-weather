@@ -25,13 +25,6 @@ export function useFirebase_Post_selected(store_selected_day, uid, arguement) {
       const dbRef_update = collection(db, "users", uid, "selected_place_date");
       addDoc(dbRef_update, store_selected_day); //because this is an array to merge together, I need to use spread operator to deconstruct array format
       break;
-
-    case "delete":      // This need to CHANGE some codes
-      const dbRef_delete = doc(db, "users", uid);
-      updateDoc(dbRef_delete, {
-        selected_place_date: store_selected_day,
-      });
-      break;
   }
 }
 

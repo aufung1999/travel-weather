@@ -13,7 +13,6 @@ import {
 } from "firebase/firestore";
 import { db } from "@/config/firebase";
 import { useSelector } from "react-redux";
-import moment from "moment";
 
 export function useFirebaseGet_Selected(uid, day_timestamp) {
   const [array, setReturn_array] = useState([]);
@@ -37,7 +36,7 @@ export function useFirebaseGet_Selected(uid, day_timestamp) {
       return () => unsubscribe();
     }, []);
     return array;
-    
+
   } else {
     const q = collection(db, "users", uid, "selected_place_date");
 
@@ -46,10 +45,10 @@ export function useFirebaseGet_Selected(uid, day_timestamp) {
       onSnapshot(q, (querySnapshot) => {
         const cities = [];
         querySnapshot.docs.forEach((doc) => {
-          console.log("doc.data(): " + JSON.stringify(doc.data()));
+          // console.log("doc.data(): " + JSON.stringify(doc.data()));
           cities.push(doc.data());
         });
-        console.log("cities: " + cities);
+        // console.log("cities: " + cities);
         setReturn_array(cities);
       });
       return () => unsubscribe();
