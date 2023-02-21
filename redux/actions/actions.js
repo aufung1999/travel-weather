@@ -151,3 +151,10 @@ export const FirebaseandSelectedAction = (data) => {
     });
   };
 };
+
+//###################################################################################
+
+export const ShowEventsThresholdReducer = (data) => ({
+  type: "DateLayout_Switched",
+  payload: data,
+});

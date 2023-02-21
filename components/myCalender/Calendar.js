@@ -25,7 +25,8 @@ const Calendar = () => {
   const [clicked, isClicked] = useState(0)
   const [switchLayout, setSwitchLayout] = useState('monthly')
 
-  const [calendar, currentDay] = CurrentTime(clicked, switchLayout); // This is a imported Function
+  const [calendar, currentDay, flat_calendar] = CurrentTime(clicked, switchLayout); // This is a imported Function
+  flat_calendar && dispatch( {type:"DateLayout_Switched", payload:flat_calendar})
 
   const [validate, setValidate] = useState()
   const [inputValue, setInputValue] = useState('')
@@ -54,6 +55,7 @@ const Calendar = () => {
 
   }
 
+
   return (
     <section className="bg-light ">
       <div className="container">
@@ -68,8 +70,8 @@ const Calendar = () => {
             {addBtn && <button className="ms-5" onClick={ handle_Store_Selected } >Store Selected Days</button>}
           </div>
           <div className="col d-flex justify-content-end">
-            <button onClick={() => setSwitchLayout(prev => "weekly")}>Weekly</button>
-            <button onClick={() => setSwitchLayout(prev => "monthly")}>Monthly</button>
+            <button onClick={() => {setSwitchLayout(prev => "weekly"), isClicked(0)}}>Weekly</button>
+            <button onClick={() => {setSwitchLayout(prev => "monthly"), isClicked(0)}}>Monthly</button>
           </div>
         </div>
 

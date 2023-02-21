@@ -1,9 +1,12 @@
 import { useAuth } from "@/context/AuthContext";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useFirebaseGet_todo } from "../firebaseActions/useFirebaseGet";
 
 function ShowEvents() {
   const { user, logout } = useAuth();
+
+  const threshold = useSelector((state) => state.ShowEvents_threshold_data);
 
   const array = useFirebaseGet_todo(user.uid, null);
 
@@ -18,15 +21,18 @@ function ShowEvents() {
   return (
     <div>
       <div>Show Events</div>
-
+      {console.log('threshold: ' + JSON.stringify(threshold , null, 1))}
       {array?.map((each_event) => // if there is jsx format, dont use {}
-        <div className="d-flex">
-            <div>{each_event["itemName"]}</div>
-            <div>{}</div>
-            <div></div>
-            <div></div>
 
-        </div>
+          threshold.includes(each_event["date"])?
+          <div className="">
+              <div>{each_event["itemName"]}</div>
+              <div>{each_event["date"]}</div>
+              <div></div>
+              <div></div>
+          </div>  : null
+
+        
       )}
     </div>
   );

@@ -3,6 +3,8 @@ import moment from "moment/moment";
 function CurrentTime(clickedNumber = 0, layoutMode = "monthly") {
   const calendar = [];
 
+  const flat_calendar = []; // for the ShowEventThresholds Reducer and redux
+
   switch (layoutMode) {
     case "monthly":
       const currentDay = moment().add(clickedNumber, "month");
@@ -12,6 +14,8 @@ function CurrentTime(clickedNumber = 0, layoutMode = "monthly") {
 
       let date = startDay.clone().subtract(1, "day"); //without this line I will get ONE less day --> get the Sunday
 
+      const date_copy = date.clone()
+
       while (date.isBefore(endDay, "day")) {
         calendar.push({
           days: Array(7)
@@ -20,7 +24,11 @@ function CurrentTime(clickedNumber = 0, layoutMode = "monthly") {
         });
       }
 
-      return [calendar, currentDay];
+      while (date_copy.isBefore(endDay, "day")) {
+        flat_calendar.push(date_copy.add(1, "day").clone().format("YYYY-MM-DD"))
+      }
+
+      return [calendar, currentDay, flat_calendar];
 
     case "weekly":
       const currentWeek = moment().add(clickedNumber, "week");
@@ -28,7 +36,9 @@ function CurrentTime(clickedNumber = 0, layoutMode = "monthly") {
       const startWeek = currentWeek.clone().startOf("week");
       const endWeek = currentWeek.clone().endOf("week");
 
-      let date_weekly = startWeek.clone().subtract(1, "day"); //without this line I will get ONE less day --> get the Sunday
+      const date_weekly = startWeek.clone().subtract(1, "day"); //without this line I will get ONE less day --> get the Sunday
+
+      const date_weekly_copy = date_weekly.clone()
 
       while (date_weekly.isBefore(endWeek, "day")) {
         calendar.push({
@@ -38,7 +48,11 @@ function CurrentTime(clickedNumber = 0, layoutMode = "monthly") {
         });
       }
 
-      return [calendar, currentWeek];
+      while (date_weekly_copy.isBefore(endWeek, "day")) {
+        flat_calendar.push(date_weekly_copy.add(1, "day").clone().format("YYYY-MM-DD"))
+      }
+
+      return [calendar, currentWeek, flat_calendar];
   }
 }
 

@@ -113,16 +113,32 @@ const addBtnReducer = (state = false, action) => {
   switch (action.type) {
     case "addBtn-is-Clicked":
       return !state;
-    default:
-      return state;
-  }
-};
+      default:
+        return state;
+      }
+    };
+
+//######################################################################################################
+
+const ShowEventsThresholdReducer = (state = null, action) => {
+  switch (action.type) {
+    case "DateLayout_Switched":
+      console.log('action.payload: ' + action.payload)
+      return action.payload;
+      default:
+        return state;
+      }
+    };
+
+//######################################################################################################
 
 const reducers = combineReducers({
   uid: uidReducer,
 
   initial_Weather_data: loadInitalDataReducer,
 
+  ShowEvents_threshold_data: ShowEventsThresholdReducer,
+  
   global_Weather_data: loadGlobalDataReducer,
 
   todo_data: loadTodosReducer,
@@ -137,6 +153,9 @@ const reducers = combineReducers({
   store_selected_days: storeSelectDaysReducer,
 
   Firebase_Selected_Data: FirebaseandSelectedReducer,
+
+
+
 });
 
 export default reducers;
