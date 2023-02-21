@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import validate_Time from "../reuseFunctions/Validate_Time";
 
-function DisplayTodo(props) {
+function DisplayTodo( {onSubmitt, array_todo}) {
   const [Infos, setInfos] = useState({
     name: "Default",
     startTime_hr: "",
@@ -15,9 +15,11 @@ function DisplayTodo(props) {
 
     const { validate, startTime, endTime } = validate_Time(Infos); // TO send data to parent component
 
+    console.log('--DisplayTodo-- array_todo: ' + JSON.stringify(array_todo , null, 1)) /// Success!!!!!!!!!!!!
+
     if (validate == true) {
       console.log("startTime: " + typeof(startTime));
-      props.onSubmitt({
+      onSubmitt({
         name: Infos.name,
         startTime: startTime,
         endTime: endTime,

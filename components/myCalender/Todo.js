@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import DisplayTodo from "./DisplayTodo";
 import * as uuid from "uuid";
-import {
-  useFirebase_todo,
-} from "../firebaseActions/useFirebasePost";
+import { useFirebase_todo } from "../firebaseActions/useFirebasePost";
 import { useAuth } from "@/context/AuthContext";
-import useFirebaseGet, { useFirebaseGet_todo } from "../firebaseActions/useFirebaseGet";
+import useFirebaseGet, {
+  useFirebaseGet_todo,
+} from "../firebaseActions/useFirebaseGet";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 
@@ -13,14 +13,16 @@ function Todo({ day }) {
   const { user, logout } = useAuth();
 
   const array_todo = useFirebaseGet_todo(user.uid, day);
-  array_todo.sort((a, b) => a["itemStartTime"] > b["itemEndTime"] ? 1 : -1) // to sort the timing
+  array_todo.sort((a, b) => (a["itemStartTime"] > b["itemEndTime"] ? 1 : -1)); // to sort the timing
 
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const [state, setState] = useState(false);
   const [isEdit, setIsEdit] = useState({ bool: false, itemID: "" }); // check for the edit btn is clicked and receive the current item ID
 
   const [itemName, setItemName] = useState(""); //for the edit input
   const [itemTime, setItemTime] = useState({ startTime: "", endTime: "" }); //for the edit input
+
+  //##################################  Check if time range overlap   #################################################
 
   //###################################################################################
   const getData = (data) => {
@@ -62,7 +64,10 @@ function Todo({ day }) {
     });
 
     setItemName(item["itemName"]);
-    setItemTime({ startTime: item["itemStartTime"], endTime: item["itemEndTime"] });
+    setItemTime({
+      startTime: item["itemStartTime"],
+      endTime: item["itemEndTime"],
+    });
   };
 
   //###################################################################################
@@ -70,69 +75,75 @@ function Todo({ day }) {
   const submitHandle = (e, item) => {
     e.preventDefault();
     item["itemName"] = itemName;
-    item["itemStartTime"] = itemTime["startTime"].replace(":",""); // make sure its NUMBER before storing in firebase
-    item["itemEndTime"] = itemTime["endTime"].replace(":","");
+    item["itemStartTime"] = itemTime["startTime"].replace(":", ""); // make sure its NUMBER before storing in firebase
+    item["itemEndTime"] = itemTime["endTime"].replace(":", "");
     useFirebase_todo(item, user.uid, "update/add");
-    setIsEdit({ bool: false, itemID: "" })
+    setIsEdit({ bool: false, itemID: "" });
   };
 
   //###################################################################################
   return (
     <div key={uuid.v4()}>
       <div className="">
-        <button type="button" className="button" onClick={() => setIsOpen(!state)}>
+        <button
+          type="button"
+          className="button"
+          onClick={() => setIsOpen(!state)}
+        >
           Add
         </button>
       </div>
 
       <div style={{ textAlign: "center" }}>
         {
-          <Modal  open={isOpen} onClose={() => setIsOpen(false)}>
-            <DisplayTodo onSubmitt={getData} />
+          <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+            <DisplayTodo onSubmitt={getData} array_todo={array_todo}/>
           </Modal>
         }
       </div>
-        <div>
-          {array_todo?.map((todo) => (
-            <div className="border border-primary m-1" key={todo.itemID}>
-              {isEdit.bool && todo.itemID === isEdit.itemID ?
-              (
-                <form onSubmit={(e) => submitHandle(e, todo)}>
-                  <input
-                    autoFocus
-                    type="text"
-                    value={itemName}
-                    onChange={(e) => setItemName(e.target.value)}
-                  />
-                  <input
-                    type="time"
-                    value={itemTime.startTime}
-                    onChange={(e) =>
-                      setItemTime({ ...itemTime, startTime: e.target.value })
-                    }
-                  />
-                  <input
-                    type="time"
-                    value={itemTime.endTime}
-                    onChange={(e) =>
-                      setItemTime({ ...itemTime, endTime: e.target.value })
-                    }
-                  />
-                  <button type="submit">Change</button>
-                </form>
-              )
-              :<div className="flex-wrap">
+      <div>
+        {array_todo?.map((todo) => (
+          <div className="border border-primary m-1" key={todo.itemID}>
+            {isEdit.bool && todo.itemID === isEdit.itemID ? (
+              <form onSubmit={(e) => submitHandle(e, todo)}>
+                <input
+                  autoFocus
+                  type="text"
+                  value={itemName}
+                  onChange={(e) => setItemName(e.target.value)}
+                />
+                <input
+                  type="time"
+                  value={itemTime.startTime}
+                  onChange={(e) =>
+                    setItemTime({ ...itemTime, startTime: e.target.value })
+                  }
+                />
+                <input
+                  type="time"
+                  value={itemTime.endTime}
+                  onChange={(e) =>
+                    setItemTime({ ...itemTime, endTime: e.target.value })
+                  }
+                />
+                <button type="submit">Change</button>
+              </form>
+            ) : (
+              <div className="flex-wrap">
                 <div>{todo.itemName}</div>
                 <div>{todo.itemStartTime}</div>
                 <div>{todo.itemEndTime}</div>
-                </div>
-              }
-              <div><button onClick={(e) => removeItem(e, todo)}>Delete</button></div>
-              <div><button onClick={(e) => editView(e, todo)}>Edit</button></div>
-
+              </div>
+            )}
+            <div>
+              <button onClick={(e) => removeItem(e, todo)}>Delete</button>
             </div>
-          ))}
-        </div>
+            <div>
+              <button onClick={(e) => editView(e, todo)}>Edit</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
