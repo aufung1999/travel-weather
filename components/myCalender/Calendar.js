@@ -157,6 +157,8 @@ const Calendar = () => {
               Sat
             </div>
           </div>
+          
+          {switchLayout == "weekly" && <Timeline />}
 
           {calendar?.map((week, index) => (
             <div>
@@ -177,54 +179,50 @@ const Calendar = () => {
                 key={"week-" + JSON.stringify(week)}
               >
                 {week["days"].map((day) => (
-
                   <div
-                  className="col border bg d-flex"
-                  key={"day-" + day}
-                  style={{ display: "table" }}
+                    className="col border bg d-flex"
+                    key={"day-" + day}
+                    style={{ display: "table" }}
                   >
-                    {/* <Timeline /> */}
-                      {validate?.includes(day.unix() * 1000) &&
-                      addBtn == true ? ( //TIME
-                        <div
-                          className=""
-                          style={{ display: "table-cell" }}
-                          key={"select-" + day}
-                        >
-                          <div>{day.format("DD-MM")}</div>
 
-                          <div className="card-body ">
-                            <ShowWeather day={day} />
-                          </div>
+                    {validate?.includes(day.unix() * 1000) && addBtn == true ? ( //TIME
+                      <div
+                        className=""
+                        style={{ display: "table-cell" }}
+                        key={"select-" + day}
+                      >
+                        <div>{day.format("DD-MM")}</div>
+
+                        <div className="card-body ">
+                          <ShowWeather day={day} />
                         </div>
-                      ) : (
-                        <div
-                          className={
-                            switchLayout == "monthly"
-                              ? thisWeekBtn == index
-                                ? styles.display
-                                : styles.fixed
-                              : styles.display
-                          }
-                          // style={{ display: (thisWeekBtn == index) ? "table-cell"  : "none" }} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
-                          key={"unselect-" + day}
-                        >
-                          <div>{day.format("DD-MM")}</div>
+                      </div>
+                    ) : (
+                      <div
+                        className={
+                          switchLayout == "monthly"
+                            ? thisWeekBtn == index
+                              ? styles.display
+                              : styles.fixed
+                            : styles.display
+                        }
+                        // style={{ display: (thisWeekBtn == index) ? "table-cell"  : "none" }} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
+                        key={"unselect-" + day}
+                      >
+                        <div>{day.format("DD-MM")}</div>
 
-                          <div className="">
-                            {day ? (
-                              <ShowWeather day={day} addBtn={addBtn} />
-                            ) : null}
+                        <div className="">
+                          {day ? (
+                            <ShowWeather day={day} addBtn={addBtn} />
+                          ) : null}
 
-                            {day ? <ShowWeather_Globe day={day} /> : null}
+                          {day ? <ShowWeather_Globe day={day} /> : null}
 
-                            {day ? (
-                              <Todo day={day.format("YYYY-MM-DD")} />
-                            ) : null}
-                          </div>
+                          {day ? <Todo day={day.format("YYYY-MM-DD")} /> : null}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
