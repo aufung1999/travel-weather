@@ -157,8 +157,8 @@ const Calendar = () => {
               Sat
             </div>
           </div>
-          
-          {switchLayout == "weekly" && <Timeline />}
+
+          {/* {switchLayout == "weekly" && <Timeline />} */}
 
           {calendar?.map((week, index) => (
             <div>

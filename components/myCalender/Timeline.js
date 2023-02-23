@@ -11,7 +11,7 @@ function Timeline() {
   array_todo.sort((a, b) => (a["itemStartTime"] > b["itemEndTime"] ? 1 : -1));
 
   return (
-    <div className="container">
+    <div className="container" style={{height: "px"}}>
       <ul className={`${styles.calendar} ${styles.weekly_byhour}`}>
         {/* <!--  EVENT NODES  -->
   <!--  DATA:      CATEGORY                         DAY              START  /  END     EVENT DETAILS  --> */}
