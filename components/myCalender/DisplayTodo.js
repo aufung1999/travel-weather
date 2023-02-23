@@ -1,7 +1,8 @@
 import React, { useState } from "react";
+import timeRanges_overlap from "../reuseFunctions/timeRanges_overlap";
 import validate_Time from "../reuseFunctions/Validate_Time";
 
-function DisplayTodo( {onSubmitt, array_todo}) {
+function DisplayTodo({ onSubmitt, array_todo }) {
   const [Infos, setInfos] = useState({
     name: "Default",
     startTime_hr: "",
@@ -15,20 +16,21 @@ function DisplayTodo( {onSubmitt, array_todo}) {
 
     const { validate, startTime, endTime } = validate_Time(Infos); // TO send data to parent component
 
-    console.log('--DisplayTodo-- array_todo: ' + JSON.stringify(array_todo , null, 1)) /// Success!!!!!!!!!!!!
+    const Overlapped = array_todo.some((todo) =>
+      timeRanges_overlap(todo["itemStartTime"],todo["itemEndTime"],startTime,endTime) != 0 )
 
-    if (validate == true) {
-      console.log("startTime: " + typeof(startTime));
+    console.log('Overlapped: ' + Overlapped)
+
+    if (validate == true && Overlapped == false) {
       onSubmitt({
         name: Infos.name,
         startTime: startTime,
         endTime: endTime,
       });
     } else {
-      console.log("NO: ");
-      alert("Time is not OK")
+      alert("Time is not OK");
     }
-  };
+  }
 
   return (
     <form onSubmit={(e) => handleSubmit(e)}>
