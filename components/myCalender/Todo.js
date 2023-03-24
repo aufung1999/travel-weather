@@ -8,8 +8,9 @@ import useFirebaseGet, {
 } from "../firebaseActions/useFirebaseGet";
 import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
+import Timeline from "./Timeline";
 
-function Todo({ day }) {
+function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
   const { user, logout } = useAuth();
 
   const array_todo = useFirebaseGet_todo(user.uid, day);
@@ -97,7 +98,7 @@ function Todo({ day }) {
       <div style={{ textAlign: "center" }}>
         {
           <Modal open={isOpen} onClose={() => setIsOpen(false)}>
-            <DisplayTodo onSubmitt={getData} array_todo={array_todo}/>
+            <DisplayTodo onSubmitt={getData} array_todo={array_todo} />
           </Modal>
         }
       </div>
@@ -143,6 +144,10 @@ function Todo({ day }) {
             </div>
           </div>
         ))}
+      </div>
+
+      <div>
+        <Timeline thisWeekBtn={thisWeekBtn} setThisWeekBtn={setThisWeekBtn}/>
       </div>
     </div>
   );

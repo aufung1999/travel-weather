@@ -218,7 +218,7 @@ const Calendar = () => {
 
                           {day ? <ShowWeather_Globe day={day} /> : null}
 
-                          {day ? <Todo day={day.format("YYYY-MM-DD")} /> : null}
+                          {day ? <Todo day={day.format("YYYY-MM-DD")} thisWeekBtn={thisWeekBtn} setThisWeekBtn={setThisWeekBtn}/> : null}
                         </div>
                       </div>
                     )}
