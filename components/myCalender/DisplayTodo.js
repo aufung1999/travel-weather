@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import timeRanges_overlap from "../reuseFunctions/timeRanges_overlap";
-import validate_Time from "../reuseFunctions/Validate_Time";
+import validate_Time from "../reuseFunctions/validate_Time";
 
 function DisplayTodo({ onSubmitt, array_todo }) {
   const [Infos, setInfos] = useState({
