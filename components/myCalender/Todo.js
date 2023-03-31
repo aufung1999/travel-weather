@@ -10,13 +10,22 @@ import { useDispatch, useSelector } from "react-redux";
 import Modal from "./Modal";
 import Timeline from "./Timeline";
 
+import styles from "@/styles/Timeline.module.css";
+
 function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
   const { user, logout } = useAuth();
 
   const array_todo = useFirebaseGet_todo(user.uid, day);
-  array_todo.sort((a, b) => (a["itemStartTime"] > b["itemEndTime"] ? 1 : -1)); // to sort the timing
+  const filtered_array = array_todo.filter(
+    (each) => each.date == day.toString()
+  );
+  const sorted_array = filtered_array.sort((a, b) =>
+    a["itemStartTime"] > b["itemEndTime"] ? 1 : -1
+  );
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isFormModalOpen, setIsFormModalOpen] = useState(false);
+
   const [state, setState] = useState(false);
   const [isEdit, setIsEdit] = useState({ bool: false, itemID: "" }); // check for the edit btn is clicked and receive the current item ID
 
@@ -60,6 +69,8 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
     console.log("Edit Clicked");
     console.log('item["itemID"]: ' + item.itemID);
 
+    setIsFormModalOpen(!state);
+
     setIsEdit((previousState) => {
       return { ...previousState, bool: !isEdit.bool, itemID: item.itemID };
     });
@@ -84,12 +95,12 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
 
   //###################################################################################
   return (
-    <div key={uuid.v4()}>
-      <div className="">
+    <div key={uuid.v4()} className="box h-100 d-flex flex-column">
+      <div className="h-100 d-flex flex-column">
         <button
           type="button"
           className="button"
-          onClick={() => setIsOpen(!state)}
+          onClick={() => setIsAddModalOpen(!state)}
         >
           Add
         </button>
@@ -97,58 +108,97 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
 
       <div style={{ textAlign: "center" }}>
         {
-          <Modal open={isOpen} onClose={() => setIsOpen(false)}>
+          <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
             <DisplayTodo onSubmitt={getData} array_todo={array_todo} />
           </Modal>
         }
       </div>
-      <div>
-        {array_todo?.map((todo) => (
-          <div className="border border-primary m-1" key={todo.itemID}>
-            {isEdit.bool && todo.itemID === isEdit.itemID ? (
-              <form onSubmit={(e) => submitHandle(e, todo)}>
-                <input
-                  autoFocus
-                  type="text"
-                  value={itemName}
-                  onChange={(e) => setItemName(e.target.value)}
-                />
-                <input
-                  type="time"
-                  value={itemTime.startTime}
-                  onChange={(e) =>
-                    setItemTime({ ...itemTime, startTime: e.target.value })
-                  }
-                />
-                <input
-                  type="time"
-                  value={itemTime.endTime}
-                  onChange={(e) =>
-                    setItemTime({ ...itemTime, endTime: e.target.value })
-                  }
-                />
-                <button type="submit">Change</button>
-              </form>
-            ) : (
-              <div className="flex-wrap">
-                <div>{todo.itemName}</div>
-                <div>{todo.itemStartTime}</div>
-                <div>{todo.itemEndTime}</div>
-              </div>
-            )}
-            <div>
-              <button onClick={(e) => removeItem(e, todo)}>Delete</button>
-            </div>
-            <div>
-              <button onClick={(e) => editView(e, todo)}>Edit</button>
-            </div>
-          </div>
-        ))}
+
+      <div className="">
+        <div className={styles.fixed}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th className={styles.th} scope="col">
+                  Events
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {sorted_array?.map((todo) => (
+                <tr className={styles.tr} key={todo.itemID}>
+                  {isEdit.bool && todo.itemID === isEdit.itemID ? (
+                    <Modal
+                      open={isFormModalOpen}
+                      onClose={() => setIsFormModalOpen(false)}
+                    >
+                      <form onSubmit={(e) => submitHandle(e, todo)}>
+                        <input
+                          autoFocus
+                          type="text"
+                          value={itemName}
+                          onChange={(e) => setItemName(e.target.value)}
+                        />
+                        <input
+                          type="time"
+                          value={itemTime.startTime}
+                          onChange={(e) =>
+                            setItemTime({
+                              ...itemTime,
+                              startTime: e.target.value,
+                            })
+                          }
+                        />
+                        <input
+                          type="time"
+                          value={itemTime.endTime}
+                          onChange={(e) =>
+                            setItemTime({
+                              ...itemTime,
+                              endTime: e.target.value,
+                            })
+                          }
+                        />
+                        <button type="submit">Change</button>
+                      </form>
+                    </Modal>
+                  ) : null}
+                  <th scope="row">
+                    <p className="fs-6">
+                      {todo.itemStartTime} - {todo.itemEndTime}{" "}
+                    </p>
+                  </th>
+                  <td className={styles.td}>{todo.itemName}</td>
+                  <td>
+                    <button
+                      onClick={(e) => removeItem(e, todo)}
+                      className="btn btn-outline-danger btn-sm w-100 mb-1 "
+                    >
+                      -
+                    </button>
+
+                    <button
+                      onClick={(e) => editView(e, todo)}
+                      className="btn btn-outline-primary btn-sm w-100 mb-1"
+                    >
+                      Edit
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      <div>
-        <Timeline thisWeekBtn={thisWeekBtn} setThisWeekBtn={setThisWeekBtn}/>
-      </div>
+      {/* <div className="mt-4">
+        <Timeline
+          thisWeekBtn={thisWeekBtn}
+          setThisWeekBtn={setThisWeekBtn}
+          day={day}
+        />
+      </div> */}
     </div>
   );
 }

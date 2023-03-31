@@ -1,13 +1,58 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
+import React, { useEffect, useRef, useState } from "react";
 
-const Home = () => {
+import ShowDestinations from "@/components/myCalender/ShowDestinations";
+import Calendar from "@/components/myCalender/Calendar";
+import {
+  loadGlobalDataAction,
+  loadInitalDataAction,
+} from "@/redux/actions/actions";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { useAuth } from "@/context/AuthContext";
+
+import ShowEvents from "@/components/myCalender/ShowEvents";
+
+function MyCalendar(props) {
+  const { user, logout } = useAuth();
+
+  const dispatch = useDispatch();
+
+  const addBtn = useSelector((state) => state.addBtn); // addBtn
+
+  const shouldLog = useRef(true);
+
+  useEffect(() => {
+    // initial the WHOLE page  ***very important here!!!
+
+    if (shouldLog.current) {
+      shouldLog.current = false;
+
+      dispatch({ type: "uid", payload: user.uid });
+      dispatch(loadInitalDataAction());
+    }
+  }, []);
+
   return (
-    <div className={styles.container}>
-      <h1>Next Firebase Auth</h1>
+    <div className="container-fluid">
+      <div className="col d-flex">
+        {addBtn ? null : (
+          <div>
+            <div className="row me-5">
+              <ShowDestinations />
+            </div>
+            <div>
+              <ShowEvents />
+            </div>
+          </div>
+        )}
+
+        <div className="row">
+          <Calendar />
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Home
+export default MyCalendar;

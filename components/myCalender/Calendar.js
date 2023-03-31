@@ -184,7 +184,6 @@ const Calendar = () => {
                     key={"day-" + day}
                     style={{ display: "table" }}
                   >
-
                     {validate?.includes(day.unix() * 1000) && addBtn == true ? ( //TIME
                       <div
                         className=""
@@ -211,14 +210,26 @@ const Calendar = () => {
                       >
                         <div>{day.format("DD-MM")}</div>
 
-                        <div className="">
-                          {day ? (
-                            <ShowWeather day={day} addBtn={addBtn} />
+                        <div className="h-50">
+                          <div className="h-25">
+                            {day ? (
+                              <ShowWeather day={day} addBtn={addBtn} />
+                            ) : null}
+
+                            {day ? <ShowWeather_Globe day={day} /> : null}
+                          </div>
+
+                          {switchLayout == "weekly" ? (
+                            <div>
+                              {day ? (
+                                <Todo
+                                  day={day.format("YYYY-MM-DD")}
+                                  thisWeekBtn={thisWeekBtn}
+                                  setThisWeekBtn={setThisWeekBtn}
+                                />
+                              ) : null}
+                            </div>
                           ) : null}
-
-                          {day ? <ShowWeather_Globe day={day} /> : null}
-
-                          {day ? <Todo day={day.format("YYYY-MM-DD")} thisWeekBtn={thisWeekBtn} setThisWeekBtn={setThisWeekBtn}/> : null}
                         </div>
                       </div>
                     )}
