@@ -17,7 +17,7 @@ const Login = () => {
     console.log(user)
     try {
       await login(data.email, data.password)
-      router.push('/myCalendar')
+      router.push('/')
     } catch (err) {
       console.log(err)
     }
