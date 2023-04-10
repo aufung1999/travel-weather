@@ -11,17 +11,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useAuth } from "@/context/AuthContext";
 
-import ShowEvents from "@/components/myCalender/ShowEvents";
 import Login from "./login";
 
 function MyCalendar(props) {
   const { user, logout } = useAuth();
 
   const dispatch = useDispatch();
-
-  const addBtn = useSelector((state) => state.addBtn); // addBtn
-
-  const shouldLog = useRef(true);
 
   return (
     <div className="container-fluid ">

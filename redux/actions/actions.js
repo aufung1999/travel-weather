@@ -1,5 +1,5 @@
 import moment from "moment";
-import * as uuid from 'uuid'
+import * as uuid from "uuid";
 
 export const loadInitalDataAction = () => {
   // Thunk Function
@@ -126,7 +126,11 @@ export const storeSelectDaysAction = (validate) => {
     let { lat, lng } = data["results"][0]["geometry"]["location"];
     console.log(lat, lng);
 
-    const validate_object = { ...validate, LL: { lat: lat, lng: lng },  ID: uuid.v4()};
+    const validate_object = {
+      ...validate,
+      LL: { lat: lat, lng: lng },
+      ID: uuid.v4(),
+    };
 
     dispatch({
       type: "store-select-Days-Data",

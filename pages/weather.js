@@ -20,6 +20,9 @@ function MyCalendar(props) {
   const dispatch = useDispatch();
 
   const addBtn = useSelector((state) => state.addBtn); // addBtn
+  const initial_Weather_data = useSelector(
+    (state) => state.initial_Weather_data
+  ); // addBtn
 
   const shouldLog = useRef(true);
 
@@ -29,29 +32,31 @@ function MyCalendar(props) {
     if (shouldLog.current) {
       shouldLog.current = false;
 
-      dispatch({ type: "uid", payload: user.uid });
       dispatch(loadInitalDataAction());
+      dispatch({ type: "uid", payload: user.uid });
     }
   }, []);
 
   return (
     <div className="container-fluid ">
-      <div className="col d-flex w-100 justify-content-center">
-        {addBtn ? null : (
-          <div>
-            <div className="row me-5">
-              <ShowDestinations />
-            </div>
+      {initial_Weather_data && (
+        <div className="col d-flex w-100 justify-content-center">
+          {addBtn ? null : (
             <div>
-              <ShowEvents />
+              <div className="row me-5">
+                <ShowDestinations />
+              </div>
+              <div>
+                <ShowEvents />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="row">
-          <Calendar />
+          <div className="row">
+            <Calendar />
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
