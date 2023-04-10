@@ -2,6 +2,9 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { loadInitalDataAction } from "@/redux/actions/actions";
 
 const Login = () => {
   const router = useRouter();
@@ -11,17 +14,20 @@ const Login = () => {
     password: "",
   });
 
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(loadInitalDataAction());
+  }, []);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
     console.log(user);
     try {
-      if (user) {
-        await login(data.email, data.password);
-        router.push("/weather");
-      } else {
-        router.push("/login");
-      }
+      await login(data.email, data.password);
+
+      router.push("/weather");
     } catch (err) {
       console.log(err);
     }

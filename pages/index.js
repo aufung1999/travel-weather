@@ -14,10 +14,6 @@ import { useAuth } from "@/context/AuthContext";
 import Login from "./login";
 
 function MyCalendar(props) {
-  const { user, logout } = useAuth();
-
-  const dispatch = useDispatch();
-
   return (
     <div className="container-fluid ">
       <Login />

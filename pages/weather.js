@@ -32,31 +32,29 @@ function MyCalendar(props) {
     if (shouldLog.current) {
       shouldLog.current = false;
 
-      dispatch(loadInitalDataAction());
+      // dispatch(loadInitalDataAction());
       dispatch({ type: "uid", payload: user.uid });
     }
   }, []);
 
   return (
     <div className="container-fluid ">
-      {initial_Weather_data && (
-        <div className="col d-flex w-100 justify-content-center">
-          {addBtn ? null : (
-            <div>
-              <div className="row me-5">
-                <ShowDestinations />
-              </div>
-              <div>
-                <ShowEvents />
-              </div>
+      <div className="col d-flex w-100 justify-content-center">
+        {addBtn ? null : (
+          <div>
+            <div className="row me-5">
+              <ShowDestinations />
             </div>
-          )}
-
-          <div className="row">
-            <Calendar />
+            <div>
+              <ShowEvents />
+            </div>
           </div>
+        )}
+
+        <div className="row">
+          <Calendar />
         </div>
-      )}
+      </div>
     </div>
   );
 }
