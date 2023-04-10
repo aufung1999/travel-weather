@@ -129,6 +129,7 @@ const Calendar = () => {
           isClicked={isClicked}
           switchLayout={switchLayout}
           oneUnit={oneUnit}
+          key={"Calendar_TimeIntervals"}
         />
 
         <div>{currentDay.format("YYYY-MM")}</div>
@@ -161,7 +162,7 @@ const Calendar = () => {
           {/* {switchLayout == "weekly" && <Timeline />} */}
 
           {calendar?.map((week, index) => (
-            <div>
+            <div key={"calendar" + index}>
               <div className="d-flex">
                 <ShowThisWeek
                   week={week}
@@ -211,12 +212,17 @@ const Calendar = () => {
                         <div>{day.format("DD-MM")}</div>
 
                         <div className="h-50">
-                          <div className="h-25">
+                          <div className="h-25" key={"day" + index}>
                             {day ? (
                               <ShowWeather day={day} addBtn={addBtn} />
                             ) : null}
 
-                            {day ? <ShowWeather_Globe day={day} /> : null}
+                            {day ? (
+                              <ShowWeather_Globe
+                                day={day}
+                                key={"ShowWeather_Globe" + index}
+                              />
+                            ) : null}
                           </div>
 
                           {switchLayout == "weekly" ? (
