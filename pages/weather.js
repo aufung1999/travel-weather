@@ -23,9 +23,35 @@ function MyCalendar(props) {
 
   const shouldLog = useRef(true);
 
+  useEffect(() => {
+    // initial the WHOLE page  ***very important here!!!
+
+    if (shouldLog.current) {
+      shouldLog.current = false;
+
+      dispatch({ type: "uid", payload: user.uid });
+      dispatch(loadInitalDataAction());
+    }
+  }, []);
+
   return (
     <div className="container-fluid ">
-      <Login />
+      <div className="col d-flex">
+        {addBtn ? null : (
+          <div>
+            <div className="row me-5">
+              <ShowDestinations />
+            </div>
+            <div>
+              <ShowEvents />
+            </div>
+          </div>
+        )}
+
+        <div className="row">
+          <Calendar />
+        </div>
+      </div>
     </div>
   );
 }

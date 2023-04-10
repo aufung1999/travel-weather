@@ -17,7 +17,7 @@ const Login = () => {
     console.log(user)
     try {
       await login(data.email, data.password)
-      router.push('/')
+      router.push('/weather')
     } catch (err) {
       console.log(err)
     }
