@@ -14,7 +14,7 @@ export function code_pic(weathercode) {
     case 48:
       return <div>depositing tie fog</div>;
     case 51:
-      return <div>Light Drizzle</div>;
+      return  <img className='icon' src='icons/fog.svg' alt="icon-weather" />
     case 53:
       return <div>moderate Drizzle</div>;
     case 55:
