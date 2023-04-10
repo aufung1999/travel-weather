@@ -38,6 +38,7 @@ function DisplayWeatherIcon({ day, matchDay }) {
 
   return (
     <>
+      <div>Hi it has something</div>
       <img
         src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`}
         alt="Weather icon"

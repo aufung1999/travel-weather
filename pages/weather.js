@@ -36,7 +36,7 @@ function MyCalendar(props) {
 
   return (
     <div className="container-fluid ">
-      <div className="col d-flex">
+      <div className="col d-flex w-100 justify-content-center">
         {addBtn ? null : (
           <div>
             <div className="row me-5">

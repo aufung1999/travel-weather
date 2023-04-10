@@ -1,33 +1,37 @@
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import { Button, Form } from 'react-bootstrap'
-import { useAuth } from '../context/AuthContext'
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import { Button, Form } from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  const router = useRouter()
-  const { user, login } = useAuth()
+  const router = useRouter();
+  const { user, login } = useAuth();
   const [data, setData] = useState({
-    email: '',
-    password: '',
-  })
+    email: "",
+    password: "",
+  });
 
   const handleLogin = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    console.log(user)
+    console.log(user);
     try {
-      await login(data.email, data.password)
-      router.push('/weather')
+      if (user) {
+        await login(data.email, data.password);
+        router.push("/weather");
+      } else {
+        router.push("/login");
+      }
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div
       style={{
-        width: '40%',
-        margin: 'auto',
+        width: "40%",
+        margin: "auto",
       }}
     >
       <h1 className="text-center my-3 ">Login</h1>
@@ -68,7 +72,7 @@ const Login = () => {
         </Button>
       </Form>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

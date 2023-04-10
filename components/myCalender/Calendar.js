@@ -17,6 +17,7 @@ import Calendar_TimeIntervals from "./Calendar_TimeIntervals";
 import ShowThisWeek from "./ShowThisWeek";
 import HideThisWeek from "./HideThisWeek";
 import Timeline from "./Timeline";
+import * as uuid from "uuid";
 
 const Calendar = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ const Calendar = () => {
   };
 
   return (
-    <section className="bg-light ">
+    <section className=" ">
       <div className="container">
         <div className="row">
           <div className="col d-flex justify-content-start">
@@ -220,7 +221,7 @@ const Calendar = () => {
                             {day ? (
                               <ShowWeather_Globe
                                 day={day}
-                                key={"ShowWeather_Globe" + index}
+                                key={"ShowWeather_Globe" + uuid.v4()}
                               />
                             ) : null}
                           </div>
@@ -250,4 +251,4 @@ const Calendar = () => {
   );
 };
 
-export default React.memo(Calendar);
+export default Calendar;

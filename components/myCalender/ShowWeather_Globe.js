@@ -48,4 +48,4 @@ function ShowWeather_Globe({ day }) {
   );
 }
 
-export default React.memo(ShowWeather_Globe);
+export default ShowWeather_Globe
