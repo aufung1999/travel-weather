@@ -34,7 +34,7 @@ function MyCalendar(props) {
     if (shouldLog.current) {
       shouldLog.current = false;
 
-      // dispatch(loadInitalDataAction());
+      dispatch(loadInitalDataAction());
       dispatch({ type: "uid", payload: user.uid });
     }
   }, []);

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -39,10 +40,14 @@ function DisplayWeatherIcon({ day, matchDay }) {
   return (
     <>
       <div>Hi it has something</div>
-      <img
-        src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`}
-        alt="Weather icon"
-      />
+      {weatherIcons[index] && (
+        <Image
+          width={50}
+          height={50}
+          src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`}
+          alt="Weather icon"
+        />
+      )}
     </>
   );
 }
