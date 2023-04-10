@@ -31,6 +31,8 @@ const Calendar = () => {
   const [switchLayout, setSwitchLayout] = useState("monthly");
   const [thisWeekBtn, setThisWeekBtn] = useState(null);
 
+  // const [refresh, setRefresh] = useState(false);
+
   const [calendar, currentDay, flat_calendar] = CurrentTime(
     clicked,
     switchLayout
@@ -107,6 +109,17 @@ const Calendar = () => {
               </button>
             )}
           </div>
+
+          <div className="col d-flex justify-content-end">
+            <button
+              onClick={() => {
+                dispatch( {type:"Refresh-is-Clicked"} )
+              }}
+            >
+              Refresh
+            </button>
+          </div>
+
           <div className="col d-flex justify-content-end">
             <button
               onClick={() => {

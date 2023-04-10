@@ -9,6 +9,16 @@ const loadInitalDataReducer = (state = null, action) => {
       return state;
   }
 };
+
+const refreshBtnReducer = (state = false, action) => {
+  switch (action.type) {
+    case "Refresh-is-Clicked":
+      return !state;
+    default:
+      return state;
+  }
+};
+
 //######################################################################################################
 const loadGlobalDataReducer = (state = [], action) => {
   switch (action.type) {
@@ -17,11 +27,12 @@ const loadGlobalDataReducer = (state = [], action) => {
 
       bool_l = state.some(
         (each) =>
-          each["destination"]["inputValue_address"] == action.payload["destination"]["inputValue_address"]
-          &&
-          each["destination"]["validate_date"][0] == action.payload["destination"]["validate_date"][0]
-          &&
-          each["destination"]["validate_date"].at(-1) == action.payload["destination"]["validate_date"].at(-1)
+          each["destination"]["inputValue_address"] ==
+            action.payload["destination"]["inputValue_address"] &&
+          each["destination"]["validate_date"][0] ==
+            action.payload["destination"]["validate_date"][0] &&
+          each["destination"]["validate_date"].at(-1) ==
+            action.payload["destination"]["validate_date"].at(-1)
       );
       console.log("bool_l: " + bool_l);
       return bool_l ? state : [...state, action.payload];
@@ -113,32 +124,33 @@ const addBtnReducer = (state = false, action) => {
   switch (action.type) {
     case "addBtn-is-Clicked":
       return !state;
-      default:
-        return state;
-      }
-    };
+    default:
+      return state;
+  }
+};
 
 //######################################################################################################
 
 const ShowEventsThresholdReducer = (state = null, action) => {
   switch (action.type) {
     case "DateLayout_Switched":
-      console.log('action.payload: ' + action.payload)
+      console.log("action.payload: " + action.payload);
       return action.payload;
-      default:
-        return state;
-      }
-    };
+    default:
+      return state;
+  }
+};
 
 //######################################################################################################
 
 const reducers = combineReducers({
   uid: uidReducer,
 
+  refreshBtn: refreshBtnReducer,
   initial_Weather_data: loadInitalDataReducer,
 
   ShowEvents_threshold_data: ShowEventsThresholdReducer,
-  
+
   global_Weather_data: loadGlobalDataReducer,
 
   todo_data: loadTodosReducer,
@@ -153,9 +165,6 @@ const reducers = combineReducers({
   store_selected_days: storeSelectDaysReducer,
 
   Firebase_Selected_Data: FirebaseandSelectedReducer,
-
-
-
 });
 
 export default reducers;

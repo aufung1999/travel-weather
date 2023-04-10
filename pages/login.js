@@ -4,7 +4,6 @@ import { Button, Form } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loadInitalDataAction } from "@/redux/actions/actions";
 
 const Login = () => {
   const router = useRouter();
@@ -15,10 +14,6 @@ const Login = () => {
   });
 
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(loadInitalDataAction());
-  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();

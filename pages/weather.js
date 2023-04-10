@@ -20,6 +20,8 @@ function MyCalendar(props) {
   const dispatch = useDispatch();
 
   const addBtn = useSelector((state) => state.addBtn); // addBtn
+  const refreshBtn = useSelector((state) => state.refreshBtn); // addBtn
+
   const initial_Weather_data = useSelector(
     (state) => state.initial_Weather_data
   ); // addBtn
@@ -36,6 +38,10 @@ function MyCalendar(props) {
       dispatch({ type: "uid", payload: user.uid });
     }
   }, []);
+
+  useEffect(() => {
+    dispatch(loadInitalDataAction());
+  }, [refreshBtn]);
 
   return (
     <div className="container-fluid ">
