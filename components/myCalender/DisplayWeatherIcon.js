@@ -44,7 +44,7 @@ function DisplayWeatherIcon({ day, matchDay }) {
         <Image
           width={50}
           height={50}
-          src={`http://openweathermap.org/img/w/${weatherIcons[index]}.png`}
+          src={`https://openweathermap.org/img/w/${weatherIcons[index]}.png`}
           alt="Weather icon"
         />
       )}
