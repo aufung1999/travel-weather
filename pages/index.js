@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAuth } from "@/context/AuthContext";
 
 import ShowEvents from "@/components/myCalender/ShowEvents";
+import Login from "./login";
 
 function MyCalendar(props) {
   const { user, logout } = useAuth();
@@ -34,23 +35,27 @@ function MyCalendar(props) {
   }, []);
 
   return (
-    <div className="container-fluid">
-      <div className="col d-flex">
-        {addBtn ? null : (
-          <div>
-            <div className="row me-5">
-              <ShowDestinations />
-            </div>
+    <div className="container-fluid ">
+      {user ? (
+        <div className="col d-flex">
+          {addBtn ? null : (
             <div>
-              <ShowEvents />
+              <div className="row me-5">
+                <ShowDestinations  />
+              </div>
+              <div>
+                <ShowEvents />
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="row">
-          <Calendar />
+          <div className="row">
+            <Calendar />
+          </div>
         </div>
-      </div>
+      ) :
+        <Login />
+      }
     </div>
   );
 }
