@@ -6,7 +6,7 @@ export const loadInitalDataAction = () => {
   return async (dispatch, getState) => {
     // Fetching results from an API : asynchronous action
     const response = await fetch(
-      "http://api.openweathermap.org/data/2.5/forecast?lat=42.985900&lon=-81.294700&appid=6e0f30fd9824b943d84e28b935ec6e4d&units=metric&cnt=40"
+      "https://api.openweathermap.org/data/2.5/forecast?lat=42.985900&lon=-81.294700&appid=6e0f30fd9824b943d84e28b935ec6e4d&units=metric&cnt=40"
     );
     const data = await response.json();
 
