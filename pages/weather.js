@@ -14,6 +14,8 @@ import { useAuth } from "@/context/AuthContext";
 import ShowEvents from "@/components/myCalender/ShowEvents";
 import Login from "./login";
 
+import wood from "../assets/wood.jpg";
+
 function MyCalendar(props) {
   const { user, logout } = useAuth();
 
@@ -44,22 +46,22 @@ function MyCalendar(props) {
   }, [refreshBtn]);
 
   return (
-    <div className="container-fluid ">
-      <div className="col d-flex w-100 justify-content-center">
+    <div className="container-fluid w-100 border">
+      <div className="row d-flex w-100 justify-content-center border border-5">
         {addBtn ? null : (
-          <div>
-            <div className="row me-5">
-              <ShowDestinations />
-            </div>
-            <div>
-              <ShowEvents />
-            </div>
+          <div
+            className="col-3 me-5 border"
+            style={{
+              backgroundImage: `url(${wood.src})`,
+            }}
+          >
+            <ShowDestinations />
+            <ShowEvents />
           </div>
         )}
 
-        <div className="row">
-          <Calendar />
-        </div>
+        {/* <div className="col-1 border"></div> */}
+        <Calendar />
       </div>
     </div>
   );

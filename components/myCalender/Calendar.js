@@ -67,200 +67,189 @@ const Calendar = () => {
   };
 
   return (
-    <section className=" ">
-      <div className="container">
-        <div className="row">
-          <div className="col d-flex justify-content-start">
-            <button
-              onClick={() => {
-                setOneUnit((prev) => prev - 1);
-              }}
-            >
-              Last month
+    <div className="col border border-0">
+      {/* ================================================================================ */}
+      <div className="row ">
+        <div className="col d-flex justify-content-start">
+          <button
+            onClick={() => {
+              setOneUnit((prev) => prev - 1);
+            }}
+          >
+            Last month
+          </button>
+          <button
+            onClick={() => {
+              setOneUnit((prev) => prev + 1);
+            }}
+          >
+            Next month
+          </button>
+        </div>
+        <div className="col">
+          <button
+            className="ms-5"
+            onClick={() => {
+              dispatch({ type: "addBtn-is-Clicked" }), setValidate([]);
+            }}
+          >
+            Select Day
+          </button>
+          {addBtn && (
+            <input
+              type="text"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              placeholder="place"
+            ></input>
+          )}
+          {addBtn && (
+            <button className="ms-5" onClick={handle_Store_Selected}>
+              Store Selected Days
             </button>
-            <button
-              onClick={() => {
-                setOneUnit((prev) => prev + 1);
-              }}
-            >
-              Next month
-            </button>
-          </div>
-          <div className="col">
-            <button
-              className="ms-5"
-              onClick={() => {
-                dispatch({ type: "addBtn-is-Clicked" }), setValidate([]);
-              }}
-            >
-              Select Day
-            </button>
-            {addBtn && (
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="place"
-              ></input>
-            )}
-            {addBtn && (
-              <button className="ms-5" onClick={handle_Store_Selected}>
-                Store Selected Days
-              </button>
-            )}
-          </div>
-
-          <div className="col d-flex justify-content-end">
-            <button
-              onClick={() => {
-                dispatch( {type:"Refresh-is-Clicked"} )
-              }}
-            >
-              Refresh
-            </button>
-          </div>
-
-          <div className="col d-flex justify-content-end">
-            <button
-              onClick={() => {
-                setSwitchLayout((prev) => "weekly"), isClicked(0);
-              }}
-            >
-              Weekly
-            </button>
-            <button
-              onClick={() => {
-                setSwitchLayout((prev) => "monthly"), isClicked(0);
-              }}
-            >
-              Monthly
-            </button>
-          </div>
+          )}
         </div>
 
-        <Calendar_TimeIntervals
-          clicked={clicked}
-          isClicked={isClicked}
-          switchLayout={switchLayout}
-          oneUnit={oneUnit}
-          key={"Calendar_TimeIntervals"}
-        />
+        <div className="col d-flex justify-content-end">
+          <button
+            onClick={() => {
+              dispatch({ type: "Refresh-is-Clicked" });
+            }}
+          >
+            Refresh
+          </button>
+        </div>
 
-        <div>{currentDay.format("YYYY-MM")}</div>
+        <div className="col d-flex justify-content-end">
+          <button
+            onClick={() => {
+              setSwitchLayout((prev) => "weekly"), isClicked(0);
+            }}
+          >
+            Weekly
+          </button>
+          <button
+            onClick={() => {
+              setSwitchLayout((prev) => "monthly"), isClicked(0);
+            }}
+          >
+            Monthly
+          </button>
+        </div>
+      </div>
+      {/* ================================================================================ */}
 
-        <div className="container">
-          <div className="row ">
-            <div className="col" key="day-Sun">
-              Sun
-            </div>
-            <div className="col" key="day-Mon">
-              Mon
-            </div>
-            <div className="col" key="day-Tue">
-              Tue
-            </div>
-            <div className="col" key="day-Wed">
-              Wed
-            </div>
-            <div className="col" key="day-Thu">
-              Thu
-            </div>
-            <div className="col" key="day-Fri">
-              Fri
-            </div>
-            <div className="col" key="day-Sat">
-              Sat
-            </div>
-          </div>
+      {/* ================================================================================ */}
+      <Calendar_TimeIntervals
+        clicked={clicked}
+        isClicked={isClicked}
+        switchLayout={switchLayout}
+        oneUnit={oneUnit}
+        key={"Calendar_TimeIntervals"}
+      />
+      {/* ================================================================================ */}
 
-          {/* {switchLayout == "weekly" && <Timeline />} */}
+      {/* ================================================================================ */}
+      <div className="row ">{currentDay.format("YYYY-MM")}</div>
 
+      <div className="row border p-2">
+        <table className="table border">
+          {/* ================================================================================ */}
+
+          {/* ================================================================================ */}
           {calendar?.map((week, index) => (
-            <div key={"calendar" + index}>
-              <div className="d-flex">
-                <ShowThisWeek
-                  week={week}
-                  index={index}
-                  thisWeekBtn={thisWeekBtn}
-                  setThisWeekBtn={setThisWeekBtn}
-                />
-                {thisWeekBtn == index && (
-                  <HideThisWeek setThisWeekBtn={setThisWeekBtn} />
-                )}
-              </div>
+            <tbody
+              key={"calendar" + index}
+              className="col border d-flex flex-row m-5 "
+            >
+              {week["days"].map((day) => (
+                <tr
+                  className="m-2 p-2 w-100 border d-flex justify-content-center"
+                  key={"week-" + JSON.stringify(week)}
+                >
+                  {/* <td className="">
+                    <ShowThisWeek
+                      week={week}
+                      index={index}
+                      thisWeekBtn={thisWeekBtn}
+                      setThisWeekBtn={setThisWeekBtn}
+                    />
+                    {thisWeekBtn == index && (
+                      <HideThisWeek setThisWeekBtn={setThisWeekBtn} />
+                    )}
+                  </td> */}
+                  <td className=" border">
+                    {index === 0 && <div>{day.unix() * 1000}</div>}
+                    <div
+                      className=""
+                      key={"day-" + day}
+                      style={{ display: "table" }}
+                    >
+                      {validate?.includes(day.unix() * 1000) &&
+                      addBtn == true ? ( //TIME
+                        <div
+                          className=""
+                          style={{ display: "table-cell" }}
+                          key={"select-" + day}
+                        >
+                          <div>{day.format("DD-MM")}</div>
 
-              <div
-                className="row fixed border"
-                key={"week-" + JSON.stringify(week)}
-              >
-                {week["days"].map((day) => (
-                  <div
-                    className="col border bg d-flex"
-                    key={"day-" + day}
-                    style={{ display: "table" }}
-                  >
-                    {validate?.includes(day.unix() * 1000) && addBtn == true ? ( //TIME
-                      <div
-                        className=""
-                        style={{ display: "table-cell" }}
-                        key={"select-" + day}
-                      >
-                        <div>{day.format("DD-MM")}</div>
-
-                        <div className="card-body ">
-                          <ShowWeather day={day} />
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        className={
-                          switchLayout == "monthly"
-                            ? thisWeekBtn == index
-                              ? styles.display
-                              : styles.fixed
-                            : styles.display
-                        }
-                        // style={{ display: (thisWeekBtn == index) ? "table-cell"  : "none" }} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
-                        key={"unselect-" + day}
-                      >
-                        <div>{day.format("DD-MM")}</div>
-
-                        <div className="h-50">
-                          <div className="h-25" key={"day" + index}>
-                            {day ? (
-                              <ShowWeather day={day} addBtn={addBtn} />
-                            ) : null}
-
-                            {day ? (
-                              <ShowWeather_Globe
-                                day={day}
-                                key={"ShowWeather_Globe" + uuid.v4()}
-                              />
-                            ) : null}
+                          <div className="card-body ">
+                            <ShowWeather day={day} />
                           </div>
+                        </div>
+                      ) : (
+                        <div
+                          className={
+                            switchLayout == "monthly"
+                              ? thisWeekBtn == index
+                                ? styles.display
+                                : styles.fixed
+                              : styles.display
+                          }
+                          // style={{ display: (thisWeekBtn == index) ? "table-cell"  : "none" }} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
+                          key={"unselect-" + day}
+                        >
+                          <div>{day.format("DD-MM")}</div>
 
-                          {switchLayout == "weekly" ? (
-                            <div>
+                          <div className="h-50">
+                            <div className="h-25" key={"day" + index}>
                               {day ? (
-                                <Todo
-                                  day={day.format("YYYY-MM-DD")}
-                                  thisWeekBtn={thisWeekBtn}
-                                  setThisWeekBtn={setThisWeekBtn}
+                                <ShowWeather day={day} addBtn={addBtn} />
+                              ) : null}
+
+                              {day ? (
+                                <ShowWeather_Globe
+                                  day={day}
+                                  key={"ShowWeather_Globe" + uuid.v4()}
                                 />
                               ) : null}
                             </div>
-                          ) : null}
+
+                            {switchLayout == "weekly" ? (
+                              <div>
+                                {day ? (
+                                  <Todo
+                                    day={day.format("YYYY-MM-DD")}
+                                    thisWeekBtn={thisWeekBtn}
+                                    setThisWeekBtn={setThisWeekBtn}
+                                  />
+                                ) : null}
+                              </div>
+                            ) : null}
+                          </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           ))}
-        </div>
+          {/* ================================================================================ */}
+        </table>
       </div>
-    </section>
+    </div>
   );
 };
 

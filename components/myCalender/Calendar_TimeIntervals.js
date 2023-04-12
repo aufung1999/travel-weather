@@ -59,7 +59,7 @@ function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
   }
 
   return (
-    <div className="container">
+    <div className="row border">
       <input
         type="date"
         data-date-format="YYYY-MM-DD"

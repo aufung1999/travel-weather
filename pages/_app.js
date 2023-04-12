@@ -25,7 +25,7 @@ function MyApp({ Component, pageProps }) {
         ) : (
           <ProtectedRoute>
             <Component {...pageProps} />
-            
+
           </ProtectedRoute>
         )}
       </Provider>
