@@ -5,18 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import DisplayWeatherIcon from "./DisplayWeatherIcon";
 
-import { selectDaysAction, storeWeatherIconsAction } from "@/redux/actions/actions";
+import {
+  selectDaysAction,
+  storeWeatherIconsAction,
+} from "@/redux/actions/actions";
 import cal_Average_temp from "../reuseFunctions/cal_Average_temp";
 
 function ShowWeather({ day, address }) {
-
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // const WeatherIcons_data = useSelector((state) => state.WeatherIcons_data);
 
   const [matchDay, setMatchDay] = useState([]);
 
-  const shouldLog = useRef(true)
+  const shouldLog = useRef(true);
 
   const initial_Weather_data = useSelector(
     (state) => state.initial_Weather_data
@@ -29,40 +31,72 @@ function ShowWeather({ day, address }) {
   useEffect(() => {
     let result = null;
 
-    if (shouldLog.current && initial_Weather_data){
+    if (shouldLog.current && initial_Weather_data) {
+      shouldLog.current = false;
 
-      shouldLog.current = false
+      result = initial_Weather_data["list"].filter(
+        (time_interval) =>
+          day.format("YYYY-MM-DD") ==
+          time_interval["dt_txt"].substr(
+            0,
+            time_interval["dt_txt"].indexOf(" ")
+          )
+      );
 
-      result = initial_Weather_data["list"].filter((time_interval) => day.format("YYYY-MM-DD") == time_interval["dt_txt"].substr(0, time_interval["dt_txt"].indexOf(" "))  )
+      console.log("result: " + JSON.stringify(result.length));
 
-      console.log('result: ' + JSON.stringify(result.length))
-
-      setMatchDay([...result])
+      setMatchDay([...result]);
     }
 
     // return () => { dispatch(  {type:"CLEANUP_WeatherIcons"} ) }
-   }, [initial_Weather_data])
+  }, [initial_Weather_data]);
 
-//############################################################################################################################################################
+  //############################################################################################################################################################
 
-   const selectedDay = () => {
-    dispatch( selectDaysAction(day.unix()) )
-   }
+  const selectedDay = () => {
+    dispatch(selectDaysAction(day.unix()));
+  };
 
-  return <div>
-      {
-        (matchDay.length != 0)?
+  return (
+    <div>
+      {matchDay.length != 0 ? (
         <div className=" border">
-          <div className=" ">{cal_Average_temp(matchDay)?.toFixed(1)}</div>
-          <div className=" "> <DisplayWeatherIcon day={day} matchDay={matchDay}/> </div>
+          <div
+            className=" "
+            style={{
+              backgroundColor: "rgba(255,255,255,0.5)",
+              fontSize: 18,
+              fontWeight: "bold",
+              fontStyle: "italic",
+            }}
+          >
+            {cal_Average_temp(matchDay)?.toFixed(1)}°C
+          </div>
+          <div className=" ">
+            <DisplayWeatherIcon day={day} matchDay={matchDay} />
+          </div>
           <div>{address}</div>
         </div>
-      :
-        null
-      }
+      ) : null}
 
-      {addBtn && <button className="btn btn-sm btn-outline py-0" onClick={selectedDay} >select</button>}
+      {addBtn && (
+        <div className="border d-flex justify-content-center">
+          <button
+            className="btn btn-sm btn-outline py-0"
+            onClick={selectedDay}
+            style={{
+              backgroundColor: "rgba(255,255,255,0.5)",
+              fontSize: 20,
+              fontWeight: "bold",
+              fontStyle: "italic",
+            }}
+          >
+            select
+          </button>
+        </div>
+      )}
     </div>
+  );
 }
 
 export default ShowWeather;

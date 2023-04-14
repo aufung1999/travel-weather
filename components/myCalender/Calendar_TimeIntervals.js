@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { DateTime, Duration } from "luxon";
+import styles from "@/styles/Calendar.module.css";
 
 function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
   const [pickDate, setPickDate] = useState("");
@@ -60,14 +61,20 @@ function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
 
   return (
     <div className="row border">
-      <input
-        type="date"
-        data-date-format="YYYY-MM-DD"
-        onChange={(e) => setPickDate(e.target.value)}
-      />
-      {pickDate}
-      <div>{oneUnit} Click</div>
-      <div>{switchLayout} time Intervals</div>
+      <div className="col"></div>
+      <div className="col">
+        <input
+          // style={{ background: "linear-gradient(#e66465, #9198e5);" }}
+          className={styles.field}
+          type="date"
+          data-date-format="YYYY-MM-DD"
+          onChange={(e) => setPickDate(e.target.value)}
+        />
+      </div>
+      <div className="col"></div>
+      {/* {pickDate} */}
+      {/* <div>{oneUnit} Click</div>
+      <div>{switchLayout} time Intervals</div> */}
       <div>{renderSwitch(switchLayout)}</div>
     </div>
   );

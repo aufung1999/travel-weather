@@ -3,6 +3,7 @@ import CurrentTime from "./CurrentTime";
 import ShowWeather from "./ShowWeather";
 
 import styles from "@/styles/Calendar.module.css";
+import Template from "@/assets/calendar_template.png";
 
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
@@ -69,11 +70,33 @@ const Calendar_Monthly = () => {
   return (
     <div className="col border border-0">
       {/* ================================================================================ */}
-      <div className="row ">
-        <div className="col d-flex justify-content-start">
+      <div
+        className="row "
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.4)", // COLOR
+        }}
+      >
+        <div className="col">
+          {/* ================================================================================ */}
+          <Calendar_TimeIntervals
+            clicked={clicked}
+            isClicked={isClicked}
+            switchLayout={switchLayout}
+            oneUnit={oneUnit}
+            key={"Calendar_TimeIntervals"}
+          />
+          {/* ================================================================================ */}
+        </div>
+        <div className="col d-flex justify-content-center shadow-sm">
           <button
+            className=""
             onClick={() => {
               setOneUnit((prev) => prev - 1);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 5px rgba(255,0,0, 1)",
+              backgroundColor: "rgba(255,0,0, 0.1)",
             }}
           >
             Last month
@@ -82,15 +105,25 @@ const Calendar_Monthly = () => {
             onClick={() => {
               setOneUnit((prev) => prev + 1);
             }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 5px rgba(255,0,0, 1)",
+              backgroundColor: "rgba(255,0,0, 0.1)",
+            }}
           >
             Next month
           </button>
         </div>
-        <div className="col">
+        <div className="col d-flex justify-content-center">
           <button
             className="ms-5"
             onClick={() => {
               dispatch({ type: "addBtn-is-Clicked" }), setValidate([]);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 5px rgba(0,255,0, 0.5)",
+              backgroundColor: "rgba(0,255,0, 0.1)",
             }}
           >
             Select Day
@@ -109,34 +142,36 @@ const Calendar_Monthly = () => {
             </button>
           )}
         </div>
-
-        <div className="col d-flex justify-content-end">
-          <button
-            onClick={() => {
-              dispatch({ type: "Refresh-is-Clicked" });
-            }}
-          >
-            Refresh
-          </button>
-        </div>
       </div>
       {/* ================================================================================ */}
 
       {/* ================================================================================ */}
-      <Calendar_TimeIntervals
-        clicked={clicked}
-        isClicked={isClicked}
-        switchLayout={switchLayout}
-        oneUnit={oneUnit}
-        key={"Calendar_TimeIntervals"}
-      />
-      {/* ================================================================================ */}
+      <div className="row d-inline-flex ">
+        <div
+          className="border"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.5)",
+            fontSize: 40,
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
+          {currentDay.format("YYYY-MM")}
+        </div>
+      </div>
 
-      {/* ================================================================================ */}
-      <div className="row ">{currentDay.format("YYYY-MM")}</div>
-
-      <div className="row border p-2">
-        <table className="table border">
+      <div
+        className="row border p-2"
+        style={{
+          backgroundColor: "rgba(28, 20, 39, 0.5)", // COLOR
+        }}
+      >
+        <table
+          className="table border"
+          style={{
+            backgroundColor: "rgba(64, 57, 74, 1)", // COLOR
+          }}
+        >
           {/* ================================================================================ */}
 
           {/* ================================================================================ */}
@@ -149,6 +184,9 @@ const Calendar_Monthly = () => {
                 <tr
                   className="m-2 p-2 w-100 border d-flex justify-content-center"
                   key={"week-" + JSON.stringify(day) + JSON.stringify(week)}
+                  style={{
+                    backgroundColor: "rgba(126, 202, 156, 1)", // COLOR
+                  }}
                 >
                   {/* <td className="">
                     <ShowThisWeek

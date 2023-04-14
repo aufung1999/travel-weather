@@ -41,20 +41,24 @@ function MyCalendar(props) {
     }
   }, []);
 
-
   return (
-    <div className="container-fluid w-100 border">
+    <div
+      className="container-fluid w-100 border"
+      style={{
+        backgroundColor: "rgba(232, 192, 125, 0.5)", // COLOR
+      }}
+    >
       <div className="row d-flex w-100 justify-content-center border border-5">
         {/* {addBtn ? null : ( */}
-          <div
-            className="col-3 me-5 border"
-            style={{
-              backgroundImage: `url(${wood.src})`,
-            }}
-          >
-            <ShowDestinations />
-            <ShowEvents />
-          </div>
+        <div
+          className="col-3 me-5 border"
+          style={{
+            backgroundImage: `url(${wood.src})`,
+          }}
+        >
+          <ShowDestinations />
+          <ShowEvents />
+        </div>
         {/* )} */}
 
         {/* <div className="col-1 border"></div> */}

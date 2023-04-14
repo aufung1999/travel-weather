@@ -63,15 +63,27 @@ const Calendar = () => {
       <div className="row border">
         <div className="col d-flex justify-content-center">
           <button
+            className="m-2 p-3"
             onClick={() => {
               setSwitchLayout((prev) => "weekly"), isClicked(0);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 10px rgba(255, 255, 255, 1)",
+              backgroundColor: "rgba(255, 255, 255, 0.5)",
             }}
           >
             Weekly
           </button>
           <button
+            className="m-2 p-3"
             onClick={() => {
               setSwitchLayout((prev) => "monthly"), isClicked(0);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 10px rgba(255, 255, 255, 1)",
+              backgroundColor: "rgba(255, 255, 255, 0.5)",
             }}
           >
             Monthly

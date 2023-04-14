@@ -38,8 +38,7 @@ function DisplayWeatherIcon({ day, matchDay }) {
   }, [index]);
 
   return (
-    <>
-      <div>Hi it has something</div>
+    <div>
       {weatherIcons[index] && (
         <Image
           width={50}
@@ -48,7 +47,7 @@ function DisplayWeatherIcon({ day, matchDay }) {
           alt="Weather icon"
         />
       )}
-    </>
+    </div>
   );
 }
 
