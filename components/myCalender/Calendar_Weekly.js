@@ -55,11 +55,30 @@ const Calendar_Weekly = () => {
   return (
     <div className="col border border-0">
       {/* ================================================================================ */}
-      <div className="row ">
-        <div className="col d-flex justify-content-start">
+      <div
+        className="row "
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.4)", // COLOR
+        }}
+      >
+        <div className="col">
+          <Calendar_TimeIntervals
+            clicked={clicked}
+            isClicked={isClicked}
+            switchLayout={switchLayout}
+            oneUnit={oneUnit}
+            key={"Calendar_TimeIntervals"}
+          />
+        </div>
+        <div className="col d-flex justify-content-center">
           <button
             onClick={() => {
               setOneUnit((prev) => prev - 1);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 5px rgba(255,0,0, 1)",
+              backgroundColor: "rgba(255,0,0, 0.1)",
             }}
           >
             Last month
@@ -67,6 +86,11 @@ const Calendar_Weekly = () => {
           <button
             onClick={() => {
               setOneUnit((prev) => prev + 1);
+            }}
+            style={{
+              borderColor: "rgba(255,0,0, 0.1)",
+              boxShadow: "0 0 5px rgba(255,0,0, 1)",
+              backgroundColor: "rgba(255,0,0, 0.1)",
             }}
           >
             Next month
@@ -76,20 +100,27 @@ const Calendar_Weekly = () => {
       {/* ================================================================================ */}
 
       {/* ================================================================================ */}
-      <Calendar_TimeIntervals
-        clicked={clicked}
-        isClicked={isClicked}
-        switchLayout={switchLayout}
-        oneUnit={oneUnit}
-        key={"Calendar_TimeIntervals"}
-      />
-      {/* ================================================================================ */}
-
-      {/* ================================================================================ */}
-      <div className="row ">{currentDay.format("YYYY-MM")}</div>
+      <div className="row d-inline-flex">
+        <div
+          className="border"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.5)",
+            fontSize: 40,
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
+          {currentDay.format("YYYY-MM")}
+        </div>
+      </div>
 
       {/* <div className="row border p-2"> */}
-      <table className="table border">
+      <table
+        className="table border"
+        style={{
+          backgroundColor: "rgba(6, 70, 53, 0.3)", // COLOR
+        }}
+      >
         {/* ================================================================================ */}
 
         {/* ================================================================================ */}
@@ -97,6 +128,9 @@ const Calendar_Weekly = () => {
           <tbody
             className="m-2 p-2 border d-flex justify-content-center"
             // key={JSON.stringify(day) + index}
+            style={{
+              backgroundColor: "rgba(81, 146, 89, 0.6)", // COLOR
+            }}
           >
             {week["days"].map((day, ind) => (
               <tr className=" border w-100 ">
@@ -107,6 +141,7 @@ const Calendar_Weekly = () => {
                     fontSize: 25,
                     fontWeight: "bold",
                     fontStyle: "italic",
+                    backgroundColor: "rgba(255, 255, 255, 0.8)", // COLOR
                   }}
                 >
                   {day.format("DD-MM")}&nbsp;
@@ -121,7 +156,10 @@ const Calendar_Weekly = () => {
 
                 <tr
                   className="d-flex justify-content-center"
-                  style={{ minHeight: "150px" }}
+                  style={{
+                    minHeight: "180px",
+                    backgroundColor: "rgba(241, 236, 195, 0.9)",
+                  }}
                   key={"day" + index}
                 >
                   {day ? <ShowWeather day={day} addBtn={addBtn} /> : null}
@@ -130,7 +168,10 @@ const Calendar_Weekly = () => {
                 <tr
                   className="d-flex justify-content-center"
                   key={"ShowWeather_Globe" + index}
-                  style={{ minHeight: "150px" }}
+                  style={{
+                    minHeight: "180px",
+                    backgroundColor: "rgba(201, 216, 182, 1)",
+                  }}
                 >
                   {day ? (
                     <ShowWeather_Globe

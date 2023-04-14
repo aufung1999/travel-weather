@@ -59,8 +59,8 @@ function ShowDestinations() {
   }, [global_Weather_data, db]);
 
   return (
-    <div className="container border flex-row">
-      <div className="row border mb-4">
+    <div className="container  flex-row">
+      <div className="row border-0 mb-4">
         <div className="col"></div>
         <div
           className="col border d-flex justify-content-center"

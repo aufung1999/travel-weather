@@ -21,8 +21,8 @@ function ShowEvents() {
   });
 
   return (
-    <div className="container border">
-      <div className="row border d-flex justify-content-center mb-4">
+    <div className="container mt-5">
+      <div className="row border-0 d-flex justify-content-center mb-4">
         <div className="col"></div>
         <div
           className="col border d-flex justify-content-center"
@@ -38,7 +38,7 @@ function ShowEvents() {
         <div className="col"></div>
       </div>
 
-      <div className="row d-flex justify-content-center">
+      <div className="row d-flex justify-content-center border p-2">
         {array?.map(
           (
             each_event,
@@ -46,7 +46,7 @@ function ShowEvents() {
           ) =>
             threshold.includes(each_event["date"]) ? (
               <div
-                className="col "
+                className="col-12 w-50 "
                 style={{
                   backgroundImage: `url(${Note.src})`,
                   backgroundPosition: "center",

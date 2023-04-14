@@ -95,7 +95,7 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
 
   //###################################################################################
   return (
-    <div key={uuid.v4()} className="box h-100 d-flex flex-column">
+    <div key={uuid.v4()} className="box h-100 d-flex flex-column w-100 ">
       <div className="h-100 d-flex flex-column">
         <button
           type="button"
@@ -106,13 +106,18 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
         </button>
       </div>
 
-      <div style={{ textAlign: "center" }}>
-        {
-          <Modal open={isAddModalOpen} onClose={() => setIsAddModalOpen(false)}>
-            <DisplayTodo onSubmitt={getData} array_todo={array_todo} />
-          </Modal>
-        }
-      </div>
+      {isAddModalOpen && (
+        <div style={{ textAlign: "center" }}>
+          {
+            <Modal
+              open={isAddModalOpen}
+              onClose={() => setIsAddModalOpen(false)}
+            >
+              <DisplayTodo onSubmitt={getData} array_todo={array_todo} />
+            </Modal>
+          }
+        </div>
+      )}
 
       <div className="">
         <div className={styles.fixed}>
@@ -125,9 +130,15 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
                 </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="">
               {sorted_array?.map((todo) => (
-                <tr className={styles.tr} key={todo.itemID}>
+                <tr
+                  className={styles.tr}
+                  key={todo.itemID}
+                  style={{
+                    backgroundColor: "rgba(201, 216, 182, 1)",
+                  }}
+                >
                   {isEdit.bool && todo.itemID === isEdit.itemID ? (
                     <Modal
                       open={isFormModalOpen}

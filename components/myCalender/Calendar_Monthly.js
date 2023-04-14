@@ -146,7 +146,7 @@ const Calendar_Monthly = () => {
       {/* ================================================================================ */}
 
       {/* ================================================================================ */}
-      <div className="row d-inline-flex ">
+      <div className="row  d-inline-flex">
         <div
           className="border"
           style={{
