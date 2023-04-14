@@ -49,10 +49,10 @@ function ShowWeather({ day, address }) {
     dispatch( selectDaysAction(day.unix()) )
    }
 
-  return <>
+  return <div>
       {
         (matchDay.length != 0)?
-        <div className="row border">
+        <div className=" border">
           <div className=" ">{cal_Average_temp(matchDay)?.toFixed(1)}</div>
           <div className=" "> <DisplayWeatherIcon day={day} matchDay={matchDay}/> </div>
           <div>{address}</div>
@@ -62,7 +62,7 @@ function ShowWeather({ day, address }) {
       }
 
       {addBtn && <button className="btn btn-sm btn-outline py-0" onClick={selectedDay} >select</button>}
-    </>
+    </div>
 }
 
 export default ShowWeather;

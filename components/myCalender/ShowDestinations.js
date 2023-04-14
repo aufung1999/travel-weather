@@ -26,7 +26,6 @@ function ShowDestinations() {
   };
 
   useEffect(() => {
-    console.log("here: ");
     global_Weather_data?.map((each) =>
       fetch(
         `https://maps.googleapis.com/maps/api/geocode/json?latlng=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ`
@@ -59,15 +58,18 @@ function ShowDestinations() {
       <div className="row border mb-4">
         <div className="col"></div>
         <div
-          className="col-4 border d-flex justify-content-center"
-          style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
+          className="col border d-flex justify-content-center"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.5)",
+            fontSize: 40,
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
         >
-          Show Destinations
+          Destinations
         </div>
         <div className="col"></div>
       </div>
-
-      {/* {console.log("countryCode: " + JSON.stringify(countryCode, null, 1))} */}
 
       {global_Weather_data?.map((each_sel, index) =>
         threshold.includes(

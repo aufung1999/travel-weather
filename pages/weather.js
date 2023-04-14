@@ -48,7 +48,7 @@ function MyCalendar(props) {
   return (
     <div className="container-fluid w-100 border">
       <div className="row d-flex w-100 justify-content-center border border-5">
-        {addBtn ? null : (
+        {/* {addBtn ? null : ( */}
           <div
             className="col-3 me-5 border"
             style={{
@@ -58,7 +58,7 @@ function MyCalendar(props) {
             <ShowDestinations />
             <ShowEvents />
           </div>
-        )}
+        {/* )} */}
 
         {/* <div className="col-1 border"></div> */}
         <Calendar />

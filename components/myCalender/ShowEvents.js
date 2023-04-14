@@ -22,11 +22,20 @@ function ShowEvents() {
 
   return (
     <div className="container border">
-      <div
-        className="row border d-flex justify-content-center mb-4"
-        style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-      >
-        Show Events
+      <div className="row border d-flex justify-content-center mb-4">
+        <div className="col"></div>
+        <div
+          className="col border d-flex justify-content-center"
+          style={{
+            backgroundColor: "rgba(255,255,255,0.5)",
+            fontSize: 40,
+            fontWeight: "bold",
+            fontStyle: "italic",
+          }}
+        >
+          Events
+        </div>
+        <div className="col"></div>
       </div>
 
       <div className="row d-flex justify-content-center">
@@ -37,7 +46,7 @@ function ShowEvents() {
           ) =>
             threshold.includes(each_event["date"]) ? (
               <div
-                className="col border"
+                className="col "
                 style={{
                   backgroundImage: `url(${Note.src})`,
                   backgroundPosition: "center",
