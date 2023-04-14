@@ -37,6 +37,13 @@ const loadGlobalDataReducer = (state = [], action) => {
       console.log("bool_l: " + bool_l);
       return bool_l ? state : [...state, action.payload];
 
+    case "delete-Global-Weather-Data":
+      const filtered_state = state.filter(
+        (each) =>
+          each["destination"]["ID"] !== action.payload["destination"]["ID"]
+      );
+      return filtered_state;
+
     case "CLEANUP_GlobalWeather":
       return [];
     default:

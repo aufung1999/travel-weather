@@ -41,9 +41,6 @@ function MyCalendar(props) {
     }
   }, []);
 
-  useEffect(() => {
-    dispatch(loadInitalDataAction());
-  }, [refreshBtn]);
 
   return (
     <div className="container-fluid w-100 border">

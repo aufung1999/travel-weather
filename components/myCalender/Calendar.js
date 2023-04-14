@@ -57,17 +57,6 @@ const Calendar = () => {
     });
   }, [store_selected_days]);
 
-  const handle_Store_Selected = () => {
-    dispatch(
-      storeSelectDaysAction({
-        validate_date: validate,
-        inputValue_address: inputValue,
-      })
-    );
-
-    setValidate([]);
-  };
-
   return (
     <div className="col border border-0">
       {/* ================================================================================ */}

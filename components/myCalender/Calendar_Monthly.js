@@ -201,7 +201,15 @@ const Calendar_Monthly = () => {
                           // style={{ display: (thisWeekBtn == index) ? "table-cell"  : "none" }} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! This is important!!!!!!
                           key={"unselect-" + day}
                         >
-                          <div className="">
+                          <div
+                            className=""
+                            style={{
+                              backgroundColor: "rgba(255,255,255,0.5)",
+                              fontSize: 20,
+                              fontWeight: "bold",
+                              fontStyle: "italic",
+                            }}
+                          >
                             {day.format("DD-MM")}&nbsp;
                             {ind === 0 && <div>Sun</div>}
                             {ind === 1 && <div>Mon</div>}

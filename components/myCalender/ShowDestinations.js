@@ -3,14 +3,17 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@/context/AuthContext";
 
 import { useFirebaseDelete_Selected } from "../firebaseActions/useFirebaseDelete";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { DateTime } from "luxon";
 
 import styles from "@/styles/ShowDestination.module.css";
+import { db } from "@/config/firebase";
 
 function ShowDestinations() {
   const { user, logout } = useAuth();
+
+  const dispatch = useDispatch();
 
   const global_Weather_data = useSelector((state) => state.global_Weather_data);
   const threshold = useSelector((state) => state.ShowEvents_threshold_data);
@@ -20,9 +23,11 @@ function ShowDestinations() {
   // const filteredArray = array1.filter(value => array2.includes(value));
 
   const Delete_from_Firebase = (e, selection) => {
-    e.preventDefault();
+    dispatch({ type: "delete-Global-Weather-Data", payload: selection });
 
-    useFirebaseDelete_Selected(user.uid, selection);
+    console.log(selection, null, 1);
+
+    useFirebaseDelete_Selected(user.uid, selection["destination"]["ID"]);
   };
 
   useEffect(() => {
@@ -51,7 +56,7 @@ function ShowDestinations() {
           }));
         })
     );
-  }, [global_Weather_data]);
+  }, [global_Weather_data, db]);
 
   return (
     <div className="container border flex-row">
@@ -95,14 +100,14 @@ function ShowDestinations() {
             }}
             key={"ShowEvent-" + each_sel["destination"]["inputValue_address"]}
           >
-            {console.log(
+            {/* {console.log(
               'each_sel["destination"]["inputValue_address"]: ' +
                 JSON.stringify(
                   backGround[each_sel["destination"]["inputValue_address"]],
                   null,
                   1
                 )
-            )}
+            )} */}
 
             <div
               className="col-6 border"
@@ -158,9 +163,6 @@ function ShowDestinations() {
             </div>
             <div className="col-4">
               <div className="row d-flex justify-content-center">
-                {console.log(
-                  "countryCode: " + JSON.stringify(countryCode, null, 1)
-                )}
                 {each_sel["destination"]["inputValue_address"] && (
                   <img
                     className={styles.photo}

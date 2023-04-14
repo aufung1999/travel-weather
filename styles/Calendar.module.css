@@ -1,7 +1,7 @@
 .fixed{
     /* width: 100px; */
     /* originally:150 px */
-    height: 300px;
+    min-height: 400px;
     background-color: #ddf5cd;
     overflow: hidden;
 }

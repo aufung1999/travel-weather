@@ -16,16 +16,17 @@ import {
 import { db } from "@/config/firebase";
 
 export async function useFirebaseDelete_Selected(uid, del_info) {
+  console.log('uid: ' + uid)
   // console.log('del_info["inputValue_address"]: ' + del_info["inputValue_address"])
+  console.log('del_info["ID"]: ' + del_info)
   const q = query(
     collection(db, "users", uid, "selected_place_date"),
-    where("ID", "==", del_info["ID"])
+    where("ID", "==", del_info)
   );
 
   const snapshot = await getDocs(q);
 
   const results = snapshot.docs.map((doc) =>
-  // console.log('doc.ID: ' + doc.id)
   (
     {
     ...doc.data(),
