@@ -124,7 +124,6 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
           <table className={styles.table}>
             <thead>
               <tr>
-                <th scope="col">#</th>
                 <th className={styles.th} scope="col">
                   Events
                 </th>
@@ -132,13 +131,7 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
             </thead>
             <tbody className="">
               {sorted_array?.map((todo) => (
-                <tr
-                  className={styles.tr}
-                  key={todo.itemID}
-                  style={{
-                    backgroundColor: "rgba(201, 216, 182, 1)",
-                  }}
-                >
+                <tr className={styles.tr} key={todo.itemID} style={{}}>
                   {isEdit.bool && todo.itemID === isEdit.itemID ? (
                     <Modal
                       open={isFormModalOpen}
@@ -176,26 +169,33 @@ function Todo({ day, thisWeekBtn, setThisWeekBtn }) {
                     </Modal>
                   ) : null}
                   <th scope="row">
-                    <p className="fs-6">
-                      {todo.itemStartTime} - {todo.itemEndTime}{" "}
-                    </p>
+                    <div className="d-flex justify-content-center">
+                      <p className="fs-6">
+                        {todo.itemStartTime} - {todo.itemEndTime}{" "}
+                      </p>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      <p className={styles.td}>{todo.itemName}</p>
+                    </div>
+                    <div className="d-flex justify-content-center">
+                      <td className="me-3">
+                        <button
+                          onClick={(e) => removeItem(e, todo)}
+                          className="btn btn-outline-danger btn-sm w-100 mb-1 "
+                        >
+                          -
+                        </button>
+                      </td>
+                      <td>
+                        <button
+                          onClick={(e) => editView(e, todo)}
+                          className="btn btn-outline-primary btn-sm w-100 mb-1"
+                        >
+                          Edit
+                        </button>
+                      </td>
+                    </div>
                   </th>
-                  <td className={styles.td}>{todo.itemName}</td>
-                  <td>
-                    <button
-                      onClick={(e) => removeItem(e, todo)}
-                      className="btn btn-outline-danger btn-sm w-100 mb-1 "
-                    >
-                      -
-                    </button>
-
-                    <button
-                      onClick={(e) => editView(e, todo)}
-                      className="btn btn-outline-primary btn-sm w-100 mb-1"
-                    >
-                      Edit
-                    </button>
-                  </td>
                 </tr>
               ))}
             </tbody>

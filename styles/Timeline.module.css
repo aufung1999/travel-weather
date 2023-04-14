@@ -12,12 +12,18 @@
   width: 100%;
 }
 
-.th{
+/* .th{
   border: #04AA6D 1px;
   width: 20%;
+} */
+
+.th {
+  border: 1px solid #ddd;
+  padding: 2px;
+  width: 50%;
 }
 
-.td, .th {
+.td {
   border: 1px solid #ddd;
   padding: 2px;
 }
