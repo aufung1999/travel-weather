@@ -118,12 +118,11 @@ export const storeSelectDaysAction = (validate) => {
     console.log("validate: " + JSON.stringify(validate));
 
     const response = await fetch(
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-        validate["inputValue_address"] +
-        "&key=AIzaSyAd-XY8yOLjTAtz4HVUjmpvvrjZy5HICJA"
+      `http://api.positionstack.com/v1/forward?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${validate["inputValue_address"]}`
     );
     const data = await response.json();
-    let { lat, lng } = data["results"][0]["geometry"]["location"];
+    let lat = data["data"][0]["latitude"];
+    let lng = data["data"][0]["longitude"];
     console.log(lat, lng);
 
     const validate_object = {

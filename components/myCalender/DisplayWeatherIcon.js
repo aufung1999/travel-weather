@@ -46,8 +46,8 @@ function DisplayWeatherIcon({ day, matchDay }) {
       {weatherIcons[index] && (
         <Image
           style={{ backgroundColor: "rgba(255,255,255,0.5)" }}
-          width={100}
-          height={100}
+          width={50}
+          height={50}
           src={`https://openweathermap.org/img/w/${weatherIcons[index]}.png`}
           alt="Weather icon"
         />

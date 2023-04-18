@@ -33,15 +33,16 @@ function ShowDestinations() {
   useEffect(() => {
     global_Weather_data?.map((each) =>
       fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ`
+        `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
       )
         .then((res) => res.json())
         .then((data) => {
+          console.log("data" + JSON.stringify(data, null, 1));
+
           setcountryCode((prev) => ({
             ...prev,
-            [each["destination"]["inputValue_address"]]: data["results"]
-              .at(-1)
-              ["address_components"].at(-1)["short_name"],
+            [each["destination"]["inputValue_address"]]:
+              data["data"][0]["country_code"].substring(0,2), /// no ["results"] in reverse geocoding
           }));
           setbackGround((prev) => ({
             ...prev,
@@ -56,7 +57,7 @@ function ShowDestinations() {
           }));
         })
     );
-  }, [global_Weather_data, db]);
+  }, [global_Weather_data,db]);
 
   return (
     <div className="container  flex-row">
