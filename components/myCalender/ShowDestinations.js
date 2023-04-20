@@ -88,14 +88,6 @@ function ShowDestinations() {
             }}
             key={"ShowEvent-" + each_sel["destination"]["inputValue_address"]}
           >
-            {/* {console.log(
-              'each_sel["destination"]["inputValue_address"]: ' +
-                JSON.stringify(
-                  backGround[each_sel["destination"]["inputValue_address"]],
-                  null,
-                  1
-                )
-            )} */}
 
             <div
               className="col-6 border"

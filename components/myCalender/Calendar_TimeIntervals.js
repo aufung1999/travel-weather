@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DateTime, Duration } from "luxon";
 import styles from "@/styles/Calendar.module.css";
 
@@ -25,9 +25,7 @@ function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
 
         let diff_value =
           diff_month.toObject()["years"] * 12 + diff_month.toObject()["months"];
-        isClicked(diff_value);
-
-        return diff_value;
+        isClicked(diff_value + oneUnit);
 
       case "weekly":
         const current_week = DateTime.fromISO(
@@ -53,14 +51,16 @@ function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
         const dur = Duration.fromObject(diff_week.toObject());
         console.log(dur.as("weeks"));
         let return_value = Math.ceil(dur.as("weeks"));
-        isClicked(return_value);
-
-        return return_value;
+        isClicked(return_value + oneUnit);
     }
   }
 
+  useEffect(() => {
+    renderSwitch(switchLayout);
+  }, [oneUnit, pickDate]);
+
   return (
-    <div className="row border">
+    <div className="row">
       <div className="col"></div>
       <div className="col">
         <input
@@ -72,10 +72,8 @@ function Calendar_TimeIntervals({ clicked, isClicked, switchLayout, oneUnit }) {
         />
       </div>
       <div className="col"></div>
-      {/* {pickDate} */}
-      {/* <div>{oneUnit} Click</div>
-      <div>{switchLayout} time Intervals</div> */}
-      <div>{renderSwitch(switchLayout)}</div>
+
+      {/* <div>{renderSwitch(switchLayout)}</div> */}
     </div>
   );
 }

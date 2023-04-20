@@ -71,6 +71,7 @@ const Calendar_Weekly = () => {
         </div>
         <div className="col d-flex justify-content-center">
           <button
+            className={styles["button-33"]}
             onClick={() => {
               setOneUnit((prev) => prev - 1);
             }}
@@ -78,11 +79,13 @@ const Calendar_Weekly = () => {
               borderColor: "rgba(255,0,0, 0.1)",
               boxShadow: "0 0 5px rgba(255,0,0, 1)",
               backgroundColor: "rgba(255,0,0, 0.1)",
+              color: "red",
             }}
           >
-            Last month
+            Last week
           </button>
           <button
+            className={styles["button-33"]}
             onClick={() => {
               setOneUnit((prev) => prev + 1);
             }}
@@ -90,9 +93,10 @@ const Calendar_Weekly = () => {
               borderColor: "rgba(255,0,0, 0.1)",
               boxShadow: "0 0 5px rgba(255,0,0, 1)",
               backgroundColor: "rgba(255,0,0, 0.1)",
+              color: "red",
             }}
           >
-            Next month
+            Next week
           </button>
         </div>
       </div>

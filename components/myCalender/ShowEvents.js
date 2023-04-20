@@ -38,7 +38,7 @@ function ShowEvents() {
         <div className="col"></div>
       </div>
 
-      <div className="row d-flex justify-content-center border p-2">
+      <div className="row d-flex justify-content-center p-2">
         {array?.map(
           (
             each_event,

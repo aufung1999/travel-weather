@@ -15,9 +15,6 @@ import ShowWeather_Globe from "./ShowWeather_Globe";
 import Todo from "./Todo";
 import { db } from "@/config/firebase";
 import Calendar_TimeIntervals from "./Calendar_TimeIntervals";
-import ShowThisWeek from "./ShowThisWeek";
-import HideThisWeek from "./HideThisWeek";
-import Timeline from "./Timeline";
 import * as uuid from "uuid";
 
 const Calendar_Monthly = () => {
@@ -32,12 +29,11 @@ const Calendar_Monthly = () => {
   const [switchLayout, setSwitchLayout] = useState("monthly");
   const [thisWeekBtn, setThisWeekBtn] = useState(null);
 
-  // const [refresh, setRefresh] = useState(false);
-
-  const [calendar, currentDay, flat_calendar] = CurrentTime(
+  let [calendar, currentDay, flat_calendar] = CurrentTime(
     clicked,
     switchLayout
   ); // This is a imported Function
+
   flat_calendar &&
     dispatch({ type: "DateLayout_Switched", payload: flat_calendar });
 
@@ -71,7 +67,7 @@ const Calendar_Monthly = () => {
     <div className="col border border-0">
       {/* ================================================================================ */}
       <div
-        className="row "
+        className="row p-2"
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.4)", // COLOR
         }}
@@ -89,7 +85,7 @@ const Calendar_Monthly = () => {
         </div>
         <div className="col d-flex justify-content-center shadow-sm">
           <button
-            className=""
+            className={styles["button-33"]}
             onClick={() => {
               setOneUnit((prev) => prev - 1);
             }}
@@ -97,11 +93,13 @@ const Calendar_Monthly = () => {
               borderColor: "rgba(255,0,0, 0.1)",
               boxShadow: "0 0 5px rgba(255,0,0, 1)",
               backgroundColor: "rgba(255,0,0, 0.1)",
+              color: "red",
             }}
           >
             Last month
           </button>
           <button
+            className={styles["button-33"]}
             onClick={() => {
               setOneUnit((prev) => prev + 1);
             }}
@@ -109,6 +107,7 @@ const Calendar_Monthly = () => {
               borderColor: "rgba(255,0,0, 0.1)",
               boxShadow: "0 0 5px rgba(255,0,0, 1)",
               backgroundColor: "rgba(255,0,0, 0.1)",
+              color: "red",
             }}
           >
             Next month
@@ -116,7 +115,7 @@ const Calendar_Monthly = () => {
         </div>
         <div className="col d-flex justify-content-center">
           <button
-            className="ms-5"
+            className={styles["button-33"]}
             onClick={() => {
               dispatch({ type: "addBtn-is-Clicked" }), setValidate([]);
             }}
@@ -137,7 +136,7 @@ const Calendar_Monthly = () => {
             ></input>
           )}
           {addBtn && (
-            <button className="ms-5" onClick={handle_Store_Selected}>
+            <button className={styles["button-33"]} onClick={handle_Store_Selected}>
               Store Selected Days
             </button>
           )}
