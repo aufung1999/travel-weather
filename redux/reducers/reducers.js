@@ -141,7 +141,7 @@ const addBtnReducer = (state = false, action) => {
 const ShowEventsThresholdReducer = (state = null, action) => {
   switch (action.type) {
     case "DateLayout_Switched":
-      console.log("action.payload: " + action.payload);
+      // console.log("action.payload: " + action.payload);
       return action.payload;
     default:
       return state;
@@ -150,6 +150,19 @@ const ShowEventsThresholdReducer = (state = null, action) => {
 
 //######################################################################################################
 
+const CountryCodeReducer = (state = {}, action) => {
+  console.log("action.payload: " + JSON.stringify(action.payload, null, 1));
+  switch (action.type) {
+    case "store-country-code":
+      let input_address = action.payload[0]
+      let countryCode = action.payload[1]
+      return { ...state, [input_address]:countryCode};
+    default:
+      return state;
+  }
+};
+
+//############################################################################################################################################################
 const reducers = combineReducers({
   uid: uidReducer,
 
@@ -164,6 +177,7 @@ const reducers = combineReducers({
 
   // """""""""""""""""useless"""""""""""""""""
   WeatherIcons_data: storeWeatherIconsReducer,
+  // """""""""""""""""useless"""""""""""""""""
 
   addBtn: addBtnReducer,
 
@@ -172,6 +186,8 @@ const reducers = combineReducers({
   store_selected_days: storeSelectDaysReducer,
 
   Firebase_Selected_Data: FirebaseandSelectedReducer,
+
+  CountryCode: CountryCodeReducer,
 });
 
 export default reducers;

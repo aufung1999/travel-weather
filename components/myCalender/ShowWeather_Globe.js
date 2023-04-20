@@ -16,6 +16,7 @@ function ShowWeather_Globe({ day }) {
   //##################################################################################################
   //To select data!!!! Mainly make the jsx part becomes more "easy to look"
   const global_Weather_data = useSelector((state) => state.global_Weather_data);
+  const CountryCode = useSelector((state) => state.CountryCode);
 
   const find_data = global_Weather_data?.find((each_selected) => {
     return each_selected["destination"]["validate_date"].some(
@@ -23,21 +24,21 @@ function ShowWeather_Globe({ day }) {
     );
   });
 
-  useEffect(() => {
-    global_Weather_data?.map((each) =>
-      fetch(
-        `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          setcountryCode((prev) => ({
-            ...prev,
-            [each["destination"]["inputValue_address"]]:
-              data["data"][0]["country_code"].substring(0,2),
-          }));
-        })
-    );
-  }, [global_Weather_data, db]);
+  // useEffect(() => {
+  //   global_Weather_data?.map((each) =>     
+  //     fetch(
+  //       `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
+  //     )
+  //       .then((res) => res.json())
+  //       .then((data) => {
+  //         setcountryCode((prev) => ({
+  //           ...prev,
+  //           [each["destination"]["inputValue_address"]]:
+  //             data["data"][0]["country_code"].substring(0,2),
+  //         }));
+  //       })
+  //   );
+  // }, [global_Weather_data]);
 
   //##################################################################################################
 
@@ -74,7 +75,7 @@ function ShowWeather_Globe({ day }) {
                     <img
                       style={{ minHeight: "10px" }}
                       src={`https://www.countryflagicons.com/SHINY/64/${
-                        countryCode[
+                        CountryCode[
                           find_data["destination"]["inputValue_address"]
                         ]
                       }.png`}

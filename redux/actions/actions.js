@@ -161,3 +161,28 @@ export const ShowEventsThresholdReducer = (data) => ({
   type: "DateLayout_Switched",
   payload: data,
 });
+
+//###################################################################################
+
+export const store_CountryCodeAction = (each) => {
+  return async (dispatch, getState) => {
+    console.log("address: " + each);
+
+    let countryCode;
+
+    const response = await fetch(
+      `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
+    );
+    const data = await response.json();
+
+    countryCode = [
+      each["destination"]["inputValue_address"],
+      data["data"][0]["country_code"].substring(0, 2),
+    ];
+
+    dispatch({
+      type: "store-country-code",
+      payload: countryCode,
+    });
+  };
+};

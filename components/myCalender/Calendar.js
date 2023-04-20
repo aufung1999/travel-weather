@@ -6,18 +6,10 @@ import styles from "@/styles/Calendar.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
-import { storeSelectDaysAction } from "@/redux/actions/actions";
 import { useFirebase_Post_selected } from "../firebaseActions/useFirebasePost";
 
 import { useAuth } from "@/context/AuthContext";
-import ShowWeather_Globe from "./ShowWeather_Globe";
-import Todo from "./Todo";
-import { db } from "@/config/firebase";
-import Calendar_TimeIntervals from "./Calendar_TimeIntervals";
-import ShowThisWeek from "./ShowThisWeek";
-import HideThisWeek from "./HideThisWeek";
-import Timeline from "./Timeline";
-import * as uuid from "uuid";
+
 import Calendar_Monthly from "./Calendar_Monthly";
 import Calendar_Weekly from "./Calendar_Weekly";
 

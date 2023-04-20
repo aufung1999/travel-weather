@@ -9,6 +9,7 @@ import { DateTime } from "luxon";
 
 import styles from "@/styles/ShowDestination.module.css";
 import { db } from "@/config/firebase";
+import { store_CountryCodeAction } from "@/redux/actions/actions";
 
 function ShowDestinations() {
   const { user, logout } = useAuth();
@@ -17,6 +18,7 @@ function ShowDestinations() {
 
   const global_Weather_data = useSelector((state) => state.global_Weather_data);
   const threshold = useSelector((state) => state.ShowEvents_threshold_data);
+  const CountryCode = useSelector((state) => state.CountryCode);
 
   const [countryCode, setcountryCode] = useState({});
   const [backGround, setbackGround] = useState({});
@@ -31,33 +33,42 @@ function ShowDestinations() {
   };
 
   useEffect(() => {
-    global_Weather_data?.map((each) =>
-      fetch(
-        `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
-      )
-        .then((res) => res.json())
-        .then((data) => {
-          console.log("data" + JSON.stringify(data, null, 1));
+    global_Weather_data?.map(
+      (each) => {
+        if (      // This can prevent un-necessary API call -> SAve my own Money
+          Object.keys(CountryCode).includes(
+            each["destination"]["inputValue_address"]
+          ) === false
+        ) {
+          dispatch(store_CountryCodeAction(each));
+        }
+      }
+      //     fetch(
+      //       `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
+      //     )
+      //       .then((res) => res.json())
+      //       .then((data) => {
+      //         console.log("data" + JSON.stringify(data, null, 1));
 
-          setcountryCode((prev) => ({
-            ...prev,
-            [each["destination"]["inputValue_address"]]:
-              data["data"][0]["country_code"].substring(0,2), /// no ["results"] in reverse geocoding
-          }));
-          setbackGround((prev) => ({
-            ...prev,
-            [each["destination"][
-              "inputValue_address"
-            ]]: `https://maps.googleapis.com/maps/api/staticmap?center=${each[
-              "destination"
-            ]["inputValue_address"].replace(
-              " ",
-              ""
-            )}&zoom=7&size=400x400&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ`,
-          }));
-        })
+      //         setcountryCode((prev) => ({
+      //           ...prev,
+      //           [each["destination"]["inputValue_address"]]:
+      //             data["data"][0]["country_code"].substring(0,2), /// no ["results"] in reverse geocoding
+      //         }));
+      //         setbackGround((prev) => ({
+      //           ...prev,
+      //           [each["destination"][
+      //             "inputValue_address"
+      //           ]]: `https://maps.googleapis.com/maps/api/staticmap?center=${each[
+      //             "destination"
+      //           ]["inputValue_address"].replace(
+      //             " ",
+      //             ""
+      //           )}&zoom=7&size=400x400&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ`,
+      //         }));
+      //       })
     );
-  }, [global_Weather_data,db]);
+  }, [global_Weather_data]);
 
   return (
     <div className="container  flex-row">
@@ -93,9 +104,12 @@ function ShowDestinations() {
           <div
             className="row border d-flex justify-content-center mb-4"
             style={{
-              backgroundImage: `url(${
-                backGround[each_sel["destination"]["inputValue_address"]]
-              })`,
+              backgroundImage: `url(https://maps.googleapis.com/maps/api/staticmap?center=${each_sel[
+                "destination"
+              ]["inputValue_address"].replace(
+                " ",
+                ""
+              )}&zoom=7&size=400x400&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ)`,
               backgroundPosition: "center",
               backgroundSize: "cover",
             }}
@@ -168,7 +182,7 @@ function ShowDestinations() {
                   <img
                     className={styles.photo}
                     src={`https://www.countryflagicons.com/SHINY/64/${
-                      countryCode[each_sel["destination"]["inputValue_address"]]
+                      CountryCode[each_sel["destination"]["inputValue_address"]]
                     }.png`}
                   />
                 )}

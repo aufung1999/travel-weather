@@ -6,7 +6,6 @@ import styles from "@/styles/Calendar.module.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import validateSelectedDays from "./validateSelectedDays";
-import { storeSelectDaysAction } from "@/redux/actions/actions";
 import { useFirebase_Post_selected } from "../firebaseActions/useFirebasePost";
 
 import { useAuth } from "@/context/AuthContext";
