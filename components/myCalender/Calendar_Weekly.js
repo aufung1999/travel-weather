@@ -17,6 +17,8 @@ import ShowThisWeek from "./ShowThisWeek";
 import HideThisWeek from "./HideThisWeek";
 import Timeline from "./Timeline";
 import * as uuid from "uuid";
+import getSunday from "../reuseFunctions/getSunday";
+import getSaturday from "../reuseFunctions/getSaturday";
 
 const Calendar_Weekly = () => {
   const dispatch = useDispatch();
@@ -30,6 +32,9 @@ const Calendar_Weekly = () => {
   const [switchLayout, setSwitchLayout] = useState("weekly");
   const [thisWeekBtn, setThisWeekBtn] = useState(null);
 
+  const [startWeekDay, setStartWeekDay] = useState(null);
+  const [endWeekDay, setEndWeekDay] = useState(null);
+
   // const [refresh, setRefresh] = useState(false);
 
   const [calendar, currentDay, flat_calendar] = CurrentTime(
@@ -38,6 +43,19 @@ const Calendar_Weekly = () => {
   ); // This is a imported Function
 
   console.log("calendar: " + JSON.stringify(calendar, null, 1));
+
+  useEffect(() => {
+    // --------------------(get the TIMEzone and local time)-------------------------------------
+    let yourDate = new Date();
+    const offset = yourDate.getTimezoneOffset();
+    // --------------------(get the TIMEzone and local time)-------------------------------------
+
+    let sunday = getSunday(Number(currentDay - offset * 60 * 1000));
+    let saturday = getSaturday(Number(currentDay - offset * 60 * 1000));
+
+    setStartWeekDay(sunday.toISOString().split("T")[0]);
+    setEndWeekDay(saturday.toISOString().split("T")[0]);
+  }, [currentDay]);
 
   const [validate, setValidate] = useState();
   const [inputValue, setInputValue] = useState("");
@@ -113,7 +131,7 @@ const Calendar_Weekly = () => {
             fontStyle: "italic",
           }}
         >
-          {currentDay.format("YYYY-MM")}
+          {startWeekDay} - {endWeekDay}
         </div>
       </div>
 
