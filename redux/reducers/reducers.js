@@ -151,7 +151,7 @@ const ShowEventsThresholdReducer = (state = null, action) => {
 //######################################################################################################
 
 const CountryCodeReducer = (state = {}, action) => {
-  console.log("action.payload: " + JSON.stringify(action.payload, null, 1));
+  // console.log("action.payload: " + JSON.stringify(action.payload, null, 1));
   switch (action.type) {
     case "store-country-code":
       let input_address = action.payload[0]

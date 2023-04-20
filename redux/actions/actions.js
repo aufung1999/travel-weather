@@ -170,14 +170,15 @@ export const store_CountryCodeAction = (each) => {
 
     let countryCode;
 
+    // `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}` // positionStack API call
     const response = await fetch(
-      `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
+      `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${each["target_data"]["latitude"]}&longitude=${each["target_data"]["longitude"]}&localityLanguage=en`  //Another get CountryCode API call
     );
     const data = await response.json();
 
     countryCode = [
       each["destination"]["inputValue_address"],
-      data["data"][0]["country_code"].substring(0, 2),
+      data["countryCode"].substring(0, 2),
     ];
 
     dispatch({
