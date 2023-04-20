@@ -20,10 +20,6 @@ function ShowDestinations() {
   const threshold = useSelector((state) => state.ShowEvents_threshold_data);
   const CountryCode = useSelector((state) => state.CountryCode);
 
-  const [countryCode, setcountryCode] = useState({});
-  const [backGround, setbackGround] = useState({});
-  // const filteredArray = array1.filter(value => array2.includes(value));
-
   const Delete_from_Firebase = (e, selection) => {
     dispatch({ type: "delete-Global-Weather-Data", payload: selection });
 
@@ -43,30 +39,7 @@ function ShowDestinations() {
           dispatch(store_CountryCodeAction(each));
         }
       }
-      //     fetch(
-      //       `http://api.positionstack.com/v1/reverse?access_key=196a0b503b2b5f3fcdc09f9c31b3ffce&query=${each["target_data"]["latitude"]},${each["target_data"]["longitude"]}`
-      //     )
-      //       .then((res) => res.json())
-      //       .then((data) => {
-      //         console.log("data" + JSON.stringify(data, null, 1));
 
-      //         setcountryCode((prev) => ({
-      //           ...prev,
-      //           [each["destination"]["inputValue_address"]]:
-      //             data["data"][0]["country_code"].substring(0,2), /// no ["results"] in reverse geocoding
-      //         }));
-      //         setbackGround((prev) => ({
-      //           ...prev,
-      //           [each["destination"][
-      //             "inputValue_address"
-      //           ]]: `https://maps.googleapis.com/maps/api/staticmap?center=${each[
-      //             "destination"
-      //           ]["inputValue_address"].replace(
-      //             " ",
-      //             ""
-      //           )}&zoom=7&size=400x400&key=AIzaSyCAzWTNbMapvSe80tFJHGw2N1PvVivEuLQ`,
-      //         }));
-      //       })
     );
   }, [global_Weather_data]);
 
