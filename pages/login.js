@@ -9,8 +9,8 @@ const Login = () => {
   const router = useRouter();
   const { user, login } = useAuth();
   const [data, setData] = useState({
-    email: "",
-    password: "",
+    email: "test12345678@gmail.com",
+    password: "12345678",
   });
 
   const dispatch = useDispatch();
